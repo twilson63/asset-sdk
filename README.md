@@ -15,6 +15,7 @@ So that if internals change or are modified, I can upgrade a libary instead of h
 * Stamp (+Super) Asset
 * Sell Asset
 * Buy Asset
+* Get Orders
 
 ### Create/Fork Asset
 
