@@ -1,0 +1,11 @@
+{
+  "name": "asset-sdk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/twilson63/asset-sdk.git",
+  "author": "Tom Wilson <tom@hyper.io>",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.16.5"
+  }
+}
