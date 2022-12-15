@@ -112,6 +112,11 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.16.5.tgz#9398d079a83b309b44021634ae6b4f7bc6a0cad0"
   integrity sha512-q00Jasz6/wCOD2XxRj4GEwj27u1zfpiBniL1ip3/YGGcYtvOoGKCNSS47sufO/8ixEgrSYDlkglSd6CxcS7m0g==
 
+crocks@^0.12.4:
+  version "0.12.4"
+  resolved "https://registry.yarnpkg.com/crocks/-/crocks-0.12.4.tgz#b4a4512f64e90c42d31375e1a2902a0f9d4b4916"
+  integrity sha512-paln6xJUrR9e/OWMFsyTi4dLyr+q99C5f7PQbGgSDHtwsfW0sCNZvnpHzvniI2dAE0uoBgeIP1Ukmme8Z0HxxA==
+
 esbuild@^0.16.5:
   version "0.16.5"
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.16.5.tgz#4e14ef61a4c906cacc5f0d997d372ff815254b23"
@@ -139,3 +144,13 @@ esbuild@^0.16.5:
     "@esbuild/win32-arm64" "0.16.5"
     "@esbuild/win32-ia32" "0.16.5"
     "@esbuild/win32-x64" "0.16.5"
+
+ramda@^0.28.0:
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.28.0.tgz#acd785690100337e8b063cab3470019be427cc97"
+  integrity sha512-9QnLuG/kPVgWvMQ4aODhsBUFKOUmnbUnsSXACv+NCQZcHbeb+v8Lodp8OVxtRULN1/xOyYLLaL6npE6dMq5QTA==
+
+zod@^3.20.2:
+  version "3.20.2"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.20.2.tgz#068606642c8f51b3333981f91c0a8ab37dfc2807"
+  integrity sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==

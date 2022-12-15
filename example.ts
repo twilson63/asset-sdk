@@ -1,4 +1,14 @@
-import * as asset from './src'
+import AssetSDK from './src'
+
+const asset = AssetSDK.init({
+  arweaveGateway: 'https://arweave.net',
+  warpGateway: 'https://gateway.redstone.finance',
+  bundlrNode: 'https://node2.bundlr.network',
+  stampContract: 'FMRHYgSijiUNBrFy-XqyNNXenHsCV0ThR4lGAPO4chA',
+  barContract: 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA',
+  cacheService: 'https://cache.permaweb.tools',
+  browser: true
+})
 
 // create a web-page asset
 const result = await asset.create({
@@ -18,6 +28,7 @@ const result = await asset.create({
 // create a blog-post asset
 
 // create a image asset
+/*
 const result = await asset.create({
   type: 'image',
   title: 'Avatar',
@@ -28,6 +39,6 @@ const result = await asset.create({
   },
   currency: 'matic'
 })
-
+*/
 // create a video asset
 
