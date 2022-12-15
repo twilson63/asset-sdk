@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { map } from 'ramda'
+
 /**
  * handle creating a web-page asset
  */
