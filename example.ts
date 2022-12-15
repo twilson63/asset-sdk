@@ -7,24 +7,29 @@ const asset = AssetSDK.init({
   stampContract: 'FMRHYgSijiUNBrFy-XqyNNXenHsCV0ThR4lGAPO4chA',
   barContract: 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA',
   cacheService: 'https://cache.permaweb.tools',
-  browser: true
+  wallet: 'use_wallet'
 })
 
-// create a web-page asset
-const result = await asset.create({
-  content: "My Markdown",
-  html: "My HTML",
-  type: "web-page",
-  title: "Beep Boop",
-  description: "A Description",
-  topics: ['one', 'two'],
-  balances: {
-    '1': 10000
-  },
-  fork: 'XXXX'
-})
+async function main() {
+  // create a web-page asset
+  const result = await asset.create({
+    content: "My Markdown",
+    html: "My HTML",
+    type: "web-page",
+    title: "Beep Boop",
+    description: "A Description",
+    topics: ['one', 'two'],
+    balances: {
+      '1': 10000
+    },
+    fork: 'XXXX'
+  })
 
+  console.log(result)
 
+}
+
+main()
 // create a blog-post asset
 
 // create a image asset

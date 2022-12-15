@@ -6,6 +6,8 @@
   "author": "Tom Wilson <tom@hyper.io>",
   "license": "MIT",
   "devDependencies": {
+    "@types/crocks": "^0.12.0",
+    "arweave": "^1.11.8",
     "esbuild": "^0.16.5"
   },
   "dependencies": {
