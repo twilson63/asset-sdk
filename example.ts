@@ -1,11 +1,12 @@
 import AssetSDK from './src'
 
 const asset = AssetSDK.init({
-  arweaveGateway: 'https://arweave.net',
+  arweaveInfo: { host: 'arweave.net', port: 443, protocol: 'https' },
   warpGateway: 'https://gateway.redstone.finance',
   bundlrNode: 'https://node2.bundlr.network',
   stampContract: 'FMRHYgSijiUNBrFy-XqyNNXenHsCV0ThR4lGAPO4chA',
   barContract: 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA',
+  assetContractSrc: 'x0ojRwrcHBmZP20Y4SY0mgusMRx-IYTjg5W8c3UFoNs',
   cacheService: 'https://cache.permaweb.tools',
   wallet: 'use_wallet'
 })
@@ -15,10 +16,11 @@ async function main() {
   const result = await asset.create({
     content: "My Markdown",
     html: "My HTML",
-    type: "web-page",
-    title: "Beep Boop",
-    description: "A Description",
-    topics: ['one', 'two'],
+    appId: "TX_ID for app",
+    type: "app",
+    title: "Now",
+    description: "The marketplace of ideas on the Permaweb!",
+    topics: ['marketplace'],
     balances: {
       '1': 10000
     },

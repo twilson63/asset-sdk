@@ -5,10 +5,10 @@ import { map } from 'ramda'
 //const URL = 'https://gateway.redstone.finance/gateway/contracts/deploy'
 
 // need to inject env into service...
-export default function (arweaveInfo, warpURL, wallet) {
+export default function (env) {
 
-  const URL = `${warpURL}/gateway/contracts/deploy`
-  const arweave = Arweave.init(arweaveInfo)
+  const URL = `${env.warpURL}/gateway/contracts/deploy`
+  const arweave = Arweave.init(env.arweaveInfo)
 
   const getData = (id) => arweave.api.get(id)
   //.then(res => res.ok ? res.data : Promise.reject(res))
@@ -31,7 +31,7 @@ export default function (arweaveInfo, warpURL, wallet) {
     const tx = await arweave.createTransaction({ data })
     map(t => tx.addTag(t.name, t.value), tags)
 
-    const result = await arweaveWallet.dispatch(tx)
+    const result = await env.arweaveWallet.dispatch(tx)
     return { data, tags, id: result.id }
   }
 
