@@ -1,27 +1,25 @@
 // @ts-nocheck
-
-import { ReaderT, Async } from 'crocks'
+import crocks from 'crocks'
 import { lensProp, over, propEq } from 'ramda'
-import createWebPageAsset from './web-page'
-import createAppAsset from './app'
+import createWebPageAsset from './web-page/index.js'
+import createAppAsset from './app/index.js'
 
+const { ReaderT, Async } = crocks
 const { of, ask, lift } = ReaderT(Async)
 
-const doPost = (env, asset) => Async.of(asset)
+const doPost = (svc, asset) => Async.of(asset)
   // generate AssetId or use the one provided
   .map(over(lensProp('id'), (id) => id || crypto.randomUUID()))
-  .chain(asset => {
+  .map(asset => {
     if (propEq('type', 'web-page', asset)) {
-      asset.contractSRC = env.assetContractSrc
       return createWebPageAsset(asset)
     } else if (propEq('type', 'app', asset)) {
-      asset.contractSRC = env.assetContractSrc
       return createAppAsset(asset)
     }
   })
-  .chain(env.publish)
+  .chain(Async.fromPromise(svc.publish))
 
-const flow = asset => ask(env => doPost(env, asset)).chain(lift)
+const flow = asset => ask(svc => doPost(svc, asset)).chain(lift)
 
 export const CreateAsset = (asset) => of(asset)
   .chain(flow)

@@ -7,7 +7,7 @@ import { map } from 'ramda'
 // need to inject env into service...
 export default function (env) {
 
-  const URL = `${env.warpURL}/gateway/contracts/deploy`
+  const URL = `${env.warpGateway}/gateway/contracts/deploy`
   const arweave = Arweave.init(env.arweaveInfo)
 
   const getData = (id) => arweave.api.get(id)
@@ -31,7 +31,7 @@ export default function (env) {
     const tx = await arweave.createTransaction({ data })
     map(t => tx.addTag(t.name, t.value), tags)
 
-    const result = await env.arweaveWallet.dispatch(tx)
+    const result = await arweaveWallet.dispatch(tx)
     return { data, tags, id: result.id }
   }
 
@@ -42,7 +42,7 @@ export default function (env) {
     const tx = await arweave.createTransaction({ data })
     map(t => tx.addTag(t.name, t.value), tags)
 
-    await arweave.transactions.sign(tx, 'use_wallet')
+    await arweave.transactions.sign(tx, env.wallet)
     tx.id = id
 
     const res = await fetch(URL, {

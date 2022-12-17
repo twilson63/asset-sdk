@@ -6,7 +6,7 @@ import { map } from 'ramda'
  */
 
 export default function (asset) {
-  const topicTags = map(v => ({ name: `Topic:${v}`, value: v }), post.topics)
+  const topicTags = map(v => ({ name: `Topic:${v}`, value: v }), asset.topics)
   return {
     asset: {
       data: asset.html,
@@ -34,7 +34,7 @@ export default function (asset) {
       ]
     },
     source: {
-      data: post.content,
+      data: asset.content,
       tags: [
         { name: 'Content-Type', value: 'text/markdown' },
         { name: 'App-Name', value: 'Permapages' },

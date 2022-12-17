@@ -1,4 +1,14 @@
-import AssetSDK from './src'
+import AssetSDK from './src/index.js'
+import crypto from 'crypto'
+import fetch from 'node-fetch'
+
+// set browser globals
+globalThis.crypto = crypto
+globalThis.arweaveWallet = {
+  dispatch: () => Promise.resolve(true),
+  sign: () => Promise.resolve({})
+}
+globalThis.fetch = fetch
 
 const asset = AssetSDK.init({
   arweaveInfo: { host: 'arweave.net', port: 443, protocol: 'https' },
@@ -14,17 +24,18 @@ const asset = AssetSDK.init({
 async function main() {
   // create a web-page asset
   const result = await asset.create({
-    content: "My Markdown",
-    html: "My HTML",
-    appId: "TX_ID for app",
+    content: "# now.arweave.dev",
+    html: "<h1>now.arweave.dev</h1>",
+    appId: "IfPAcD48oDDg0Ncww3FAZxsDZVZNyjPGNBtgYegUzuY",
     type: "app",
     title: "Now",
     description: "The marketplace of ideas on the Permaweb!",
     topics: ['marketplace'],
     balances: {
-      '1': 10000
-    },
-    fork: 'XXXX'
+      'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI': 10000
+    }
+    //,
+    //forks: 'XXXX'
   })
 
   console.log(result)

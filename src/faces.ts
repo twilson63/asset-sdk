@@ -17,7 +17,8 @@ const TradeableAsset = z.object({
   balances: z.record(z.string(), z.number()),
   content: z.string().optional(),
   html: z.string().optional(),
-  fork: z.string().optional()
+  forks: z.string().optional(),
+  appId: z.string().optional()
 })
 
 export type TradeableAsset = z.infer<typeof TradeableAsset>
