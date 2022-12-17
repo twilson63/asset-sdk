@@ -8,6 +8,7 @@ import { map } from 'ramda'
 export default function (asset) {
   const topicTags = map(v => ({ name: `Topic:${v}`, value: v }), asset.topics)
   return {
+    id: asset.id,
     asset: {
       data: asset.html,
       tags: [

@@ -17,7 +17,11 @@ const doPost = (svc, asset) => Async.of(asset)
       return createAppAsset(asset)
     }
   })
-  .chain(Async.fromPromise(svc.publish))
+  .chain(asset =>
+    Async.fromPromise(svc.publish)(asset)
+      .map(result => ({ ok: true, id: asset.id, contract: result.id }))
+  )
+
 
 const flow = asset => ask(svc => doPost(svc, asset)).chain(lift)
 

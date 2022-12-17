@@ -6,7 +6,7 @@ import { assoc } from 'ramda'
 
 const TradeableAsset = z.object({
   id: z.string().optional(),
-  title: z.string().min(10).max(180),
+  title: z.string().min(3).max(180),
   description: z.string().max(300),
   type: z.string(),
   topics: z.array(z.string()),

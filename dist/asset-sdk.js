@@ -20108,6 +20108,7 @@ var hasProtoTrim = typeof String.prototype.trim === "function";
 function web_page_default(asset) {
   const topicTags = map_default((v) => ({ name: `Topic:${v}`, value: v }), asset.topics);
   return {
+    id: asset.id,
     asset: {
       data: asset.html,
       tags: [
@@ -20154,6 +20155,7 @@ function web_page_default(asset) {
 function app_default(asset) {
   const topicTags = map_default((v) => ({ name: `Topic:${v}`, value: v }), asset.topics);
   return {
+    id: asset.id,
     asset: {
       data: asset.html,
       tags: [
@@ -20204,7 +20206,9 @@ var doPost = (svc, asset) => Async.of(asset).map(over_default(lensProp_default("
   } else if (propEq_default("type", "app", asset2)) {
     return app_default(asset2);
   }
-}).chain(Async.fromPromise(svc.publish));
+}).chain(
+  (asset2) => Async.fromPromise(svc.publish)(asset2).map((result) => ({ ok: true, id: asset2.id, contract: result.id }))
+);
 var flow = (asset) => ask((svc) => doPost(svc, asset)).chain(lift);
 var CreateAsset = (asset) => flow(asset);
 
@@ -20254,7 +20258,7 @@ function asset_svc_default(env) {
 // src/index.js
 var TradeableAsset = mod.object({
   id: mod.string().optional(),
-  title: mod.string().min(10).max(180),
+  title: mod.string().min(3).max(180),
   description: mod.string().max(300),
   type: mod.string(),
   topics: mod.array(mod.string()),
