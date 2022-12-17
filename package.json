@@ -1,5 +1,5 @@
 {
-  "name": "@twilsont63/asset-sdk",
+  "name": "@twilson63/asset-sdk",
   "version": "0.0.1",
   "main": "dist/asset-sdk.js",
   "type": "module",
@@ -7,6 +7,7 @@
   "author": "Tom Wilson <tom@hyper.io>",
   "license": "MIT",
   "devDependencies": {
+    "@bundlr-network/client": "^0.9.11",
     "@types/crocks": "^0.12.0",
     "@types/ramda": "^0.28.20",
     "arweave": "^1.11.8",
