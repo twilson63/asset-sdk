@@ -16938,19 +16938,19 @@ var doPost = (svc, asset) => Async.of(asset).map(over_default(lensProp_default("
   }
 }).chain(Async.fromPromise(svc.publish));
 var flow = (asset) => ask((svc) => doPost(svc, asset)).chain(lift);
-var CreateAsset = (asset) => of(asset).chain(flow);
+var CreateAsset = (asset) => flow(asset);
 
 // src/services/asset-svc.js
 var import_arweave = __toESM(require_web(), 1);
 function asset_svc_default(env) {
   const URL = `${env.warpGateway}/gateway/contracts/deploy`;
-  const arweave = import_arweave.default.init(env.arweaveInfo);
+  const arweave = import_arweave.default.default.init(env.arweaveInfo);
   const getData = (id) => arweave.api.get(id);
   const publish = (asset) => {
     return Promise.resolve(asset).then((asset2) => Promise.all([
       dispatch(asset2.source),
       dispatch(asset2.asset)
-    ])).then(([_, asset2]) => asset2).then(post).then((x) => (console.log("asset", x), x));
+    ])).then(([_, asset2]) => asset2).then((x) => (console.log("results", x), x)).then(post).then((x) => (console.log("asset", x), x));
   };
   async function dispatch({ data, tags }) {
     if (!arweaveWallet) {
@@ -16959,6 +16959,7 @@ function asset_svc_default(env) {
     const tx = await arweave.createTransaction({ data });
     map_default((t) => tx.addTag(t.name, t.value), tags);
     const result = await arweaveWallet.dispatch(tx);
+    console.log("dispatch", result);
     return { data, tags, id: result.id };
   }
   async function post({ data, tags, id }) {

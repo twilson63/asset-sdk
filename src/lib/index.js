@@ -21,5 +21,4 @@ const doPost = (svc, asset) => Async.of(asset)
 
 const flow = asset => ask(svc => doPost(svc, asset)).chain(lift)
 
-export const CreateAsset = (asset) => of(asset)
-  .chain(flow)
+export const CreateAsset = (asset) => flow(asset)

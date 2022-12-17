@@ -1,6 +1,6 @@
 {
   "name": "@twilson63/asset-sdk",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "dist/asset-sdk.js",
   "type": "module",
   "repository": "https://github.com/twilson63/asset-sdk.git",
@@ -10,13 +10,12 @@
     "@bundlr-network/client": "^0.9.11",
     "@types/crocks": "^0.12.0",
     "@types/ramda": "^0.28.20",
-    "arweave": "^1.11.8",
     "esbuild": "^0.16.5",
-    "node-fetch": "^3.3.0"
-  },
-  "dependencies": {
+    "node-fetch": "^3.3.0",
     "crocks": "^0.12.4",
     "ramda": "^0.28.0",
-    "zod": "^3.20.2"
-  }
+    "zod": "^3.20.2",
+    "arweave": "^1.11.8"
+  },
+  "dependencies": {}
 }

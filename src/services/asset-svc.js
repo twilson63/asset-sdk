@@ -8,7 +8,7 @@ import { map } from 'ramda'
 export default function (env) {
 
   const URL = `${env.warpGateway}/gateway/contracts/deploy`
-  const arweave = Arweave.init(env.arweaveInfo)
+  const arweave = Arweave.default.init(env.arweaveInfo)
 
   const getData = (id) => arweave.api.get(id)
   //.then(res => res.ok ? res.data : Promise.reject(res))
@@ -20,6 +20,7 @@ export default function (env) {
         dispatch(asset.asset)
       ]))
       .then(([_, asset]) => asset)
+      .then(x => (console.log('results', x), x))
       .then(post)
       .then(x => (console.log('asset', x), x))
   }
