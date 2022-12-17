@@ -17,7 +17,6 @@ export default function (env) {
     return dispatch(asset.source)
       .then(() => dispatch(asset.asset))
       .then(({ id }) => post({ id, ...asset.asset }))
-      .then(x => (console.log('asset', x), x))
   }
 
   async function dispatch({ data, tags }) {
