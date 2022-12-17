@@ -14,14 +14,9 @@ export default function (env) {
   //.then(res => res.ok ? res.data : Promise.reject(res))
 
   const publish = (asset) => {
-    return Promise.resolve(asset)
-      .then(asset => Promise.all([
-        dispatch(asset.source),
-        dispatch(asset.asset)
-      ]))
-      .then(([_, asset]) => asset)
-      .then(x => (console.log('results', x), x))
-      .then(post)
+    return dispatch(asset.source)
+      .then(() => dispatch(asset.asset))
+      .then(({ id }) => post({ id, ...asset.asset }))
       .then(x => (console.log('asset', x), x))
   }
 
