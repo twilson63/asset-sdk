@@ -19977,6 +19977,10 @@ function compose() {
   return pipe.apply(this, reverse_default(arguments));
 }
 
+// node_modules/ramda/es/head.js
+var head = /* @__PURE__ */ nth_default(0);
+var head_default = head;
+
 // node_modules/ramda/es/internal/_arrayFromIterator.js
 function _arrayFromIterator(iter) {
   var list = [];
@@ -20553,7 +20557,7 @@ var GetAsset = (id, type3) => ask(
       pluck_default("node")
     )(edges);
     const asset = compose(
-      head,
+      head_default,
       filter_default((n) => find_default((t) => t.name === "Type", n.tags).value === type3 && find_default((t) => t.name === "Uploader", n.tags) === void 0),
       pluck_default("node")
     )(edges);

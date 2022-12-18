@@ -1,6 +1,6 @@
 // @ts-nocheck
 import crocks from 'crocks'
-import { lensProp, over, propEq, compose, find, filter, pluck, assoc, join } from 'ramda'
+import { lensProp, over, propEq, compose, find, filter, pluck, assoc, join, head } from 'ramda'
 import createWebPageAsset from './web-page/index.js'
 import createAppAsset from './app/index.js'
 
