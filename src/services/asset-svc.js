@@ -1,11 +1,13 @@
 // @ts-nocheck
 import Arweave from 'arweave'
-import { map } from 'ramda'
+import { map, path } from 'ramda'
 
 //const URL = 'https://gateway.redstone.finance/gateway/contracts/deploy'
 
 // need to inject env into service...
 export default function (env) {
+
+  const ARWEAVE_URL = `${env.arweaveInfo.protocol}://${env.arweaveInfo.host}:${env.arweaveInfo.port}`
 
   const URL = `${env.warpGateway}/gateway/contracts/deploy`
   const arweave = Arweave.default.init(env.arweaveInfo)
@@ -54,7 +56,7 @@ export default function (env) {
   }
 
   function run({ query, variables }) {
-    return fetch(`${URL}/graphql`, {
+    return fetch(`${ARWEAVE_URL}/graphql`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
