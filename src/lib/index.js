@@ -43,7 +43,7 @@ export const GetAsset = (id, type) => ask(svc => Async.of({ id, type })
     )(edges)
 
     return Async.all([
-      () => source ? Async.fromPromise(svc.getData)(source.id) : Async.Resolved({ data: 'No Source Data...' }),
+      Async.Resolved({ data: 'No Source Data...' }), // Async.fromPromise(svc.getData)(source.id)
       Async.fromPromise(svc.getData)(asset.id)
     ])
       .map(

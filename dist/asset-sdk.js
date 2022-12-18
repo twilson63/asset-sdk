@@ -20563,7 +20563,7 @@ var GetAsset = (id, type3) => ask(
       pluck_default("node")
     )(edges);
     return Async.all([
-      () => source ? Async.fromPromise(svc.getData)(source.id) : Async.Resolved({ data: "No Source Data..." }),
+      Async.Resolved({ data: "No Source Data..." }),
       Async.fromPromise(svc.getData)(asset.id)
     ]).map(
       ([s, a]) => ({
