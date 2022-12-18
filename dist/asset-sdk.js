@@ -20369,38 +20369,40 @@ function app_default(asset) {
 // src/lib/index.js
 var { ReaderT, Async } = import_crocks.default;
 var { of, ask, lift } = ReaderT(Async);
-var doPost = (svc2, asset) => Async.of(asset).map(over_default(lensProp_default("id"), (id) => id || crypto.randomUUID())).map((asset2) => {
+var doPost = (svc, asset) => Async.of(asset).map(over_default(lensProp_default("id"), (id) => id || crypto.randomUUID())).map((asset2) => {
   if (propEq_default("type", "web-page", asset2)) {
     return web_page_default(asset2);
   } else if (propEq_default("type", "app", asset2)) {
     return app_default(asset2);
   }
 }).chain(
-  (asset2) => Async.fromPromise(svc2.publish)(asset2).map((result) => ({ ok: true, id: asset2.id, contract: result.id }))
+  (asset2) => Async.fromPromise(svc.publish)(asset2).map((result) => ({ ok: true, id: asset2.id, contract: result.id }))
 );
-var flow = (asset) => ask((svc2) => doPost(svc2, asset)).chain(lift);
+var flow = (asset) => ask((svc) => doPost(svc, asset)).chain(lift);
 var CreateAsset = (asset) => flow(asset);
-var GetAsset = (id, type3) => buildQuery(id, type3).chain(Async.fromPromise(svc.gql)).chain((edges) => {
-  const source = compose(
-    find_default((n) => find_default((t) => t.name === "Type", n.tags).value === "source"),
-    pluck_default("node")
-  )(edges);
-  const asset = compose(
-    head,
-    filter_default((n) => find_default((t) => t.name === "Type", n.tags).value === type3 && find_default((t) => t.name === "Uploader", n.tags) === void 0),
-    pluck_default("node")
-  )(edges);
-  return Async.all([
-    Async.fromPromise(svc.getData)(source.id),
-    Async.fromPromise(svc.getData)(asset.id)
-  ]).map(
-    ([s, a]) => ({
-      ...toAssetItem(asset),
-      content: s.data,
-      html: a.data
-    })
-  );
-});
+var GetAsset = (id, type3) => ask(
+  (svc) => buildQuery(id, type3).chain(Async.fromPromise(svc.gql)).chain((edges) => {
+    const source = compose(
+      find_default((n) => find_default((t) => t.name === "Type", n.tags).value === "source"),
+      pluck_default("node")
+    )(edges);
+    const asset = compose(
+      head,
+      filter_default((n) => find_default((t) => t.name === "Type", n.tags).value === type3 && find_default((t) => t.name === "Uploader", n.tags) === void 0),
+      pluck_default("node")
+    )(edges);
+    return Async.all([
+      Async.fromPromise(svc.getData)(source.id),
+      Async.fromPromise(svc.getData)(asset.id)
+    ]).map(
+      ([s, a]) => ({
+        ...toAssetItem(asset),
+        content: s.data,
+        html: a.data
+      })
+    );
+  })
+).chain(lift);
 function buildQuery(id, type3) {
   return {
     query: `query ($ids: [String!]!, $cursor: String, $type: String!) {
@@ -20528,16 +20530,16 @@ var TradeableAsset = mod.object({
 });
 var src_default = Object.freeze({
   init: (env) => {
-    const svc2 = asset_svc_default(env);
+    const svc = asset_svc_default(env);
     return Object.freeze({
       create: async (asset) => {
         TradeableAsset.parse(asset);
         return CreateAsset(
           assoc_default("contractSRC", env.assetContractSrc, asset)
-        ).runWith(svc2).toPromise();
+        ).runWith(svc).toPromise();
       },
       get: async (id, type3) => {
-        return GetAsset(id, type3).runWith(svc2).toPromise();
+        return GetAsset(id, type3).runWith(svc).toPromise();
       }
     });
   }
