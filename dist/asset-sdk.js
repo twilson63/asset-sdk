@@ -1946,8 +1946,8 @@ var require_array = __commonJS({
           "Array.fold: Non-empty Array of Semigroups required"
         );
       }
-      var head = m[0];
-      if (!isSemigroup(head)) {
+      var head2 = m[0];
+      if (!isSemigroup(head2)) {
         throw new TypeError("Array.fold: Must contain Semigroups of the same type");
       }
       return m.reduce(function(x, y) {
@@ -1963,13 +1963,13 @@ var require_array = __commonJS({
           "Array.foldMap: Non-empty Array required"
         );
       }
-      var head = fn(m[0]);
-      if (!isSemigroup(head)) {
+      var head2 = fn(m[0]);
+      if (!isSemigroup(head2)) {
         throw new TypeError(
           "Array.foldMap: Provided function must return Semigroups of the same type"
         );
       }
-      return m.length === 1 ? head : m.slice(1).reduce(function(semi, x) {
+      return m.length === 1 ? head2 : m.slice(1).reduce(function(semi, x) {
         var val = fn(x);
         if (!(isSameType(semi, val) && isSemigroup(val))) {
           throw new TypeError(
@@ -1977,7 +1977,7 @@ var require_array = __commonJS({
           );
         }
         return semi.concat(val);
-      }, head);
+      }, head2);
     }
     function set(indx, val, m) {
       var arr = m.slice();
@@ -3435,10 +3435,10 @@ var require_List = __commonJS({
       var inspect = function() {
         return "List" + _inspect(xs);
       };
-      var head = function() {
+      var head2 = function() {
         return xs.length ? Just(xs[0]) : Nothing();
       };
-      var tail = function() {
+      var tail2 = function() {
         return xs.length && xs.length > 1 ? Just(List(xs.slice(1))) : Nothing();
       };
       var cons = function(x2) {
@@ -3455,7 +3455,7 @@ var require_List = __commonJS({
           return List(xs.concat(m.valueOf()));
         };
       }
-      function reduce(method) {
+      function reduce2(method) {
         return function(fn, i) {
           if (!isFunction(fn)) {
             throw new TypeError("List." + method + ": Function required for first argument");
@@ -3473,8 +3473,8 @@ var require_List = __commonJS({
         if (isEmpty(xs)) {
           throw new TypeError("List.fold: List must contain at least one Semigroup");
         }
-        var head2 = xs[0];
-        if (!isSemigroup(head2)) {
+        var head3 = xs[0];
+        if (!isSemigroup(head3)) {
           throw new TypeError("List.fold: List must contain Semigroups of the same type");
         }
         return xs.reduce(function(x2, y) {
@@ -3495,8 +3495,8 @@ var require_List = __commonJS({
             "List.foldMap: List must not be empty"
           );
         }
-        var head2 = fn(xs[0]);
-        if (!isSemigroup(head2)) {
+        var head3 = fn(xs[0]);
+        if (!isSemigroup(head3)) {
           throw new TypeError(
             "List.foldMap: Provided function must return Semigroups of the same type"
           );
@@ -3509,9 +3509,9 @@ var require_List = __commonJS({
             );
           }
           return semi.concat(val);
-        }, head2) : head2;
+        }, head3) : head3;
       }
-      function filter(method) {
+      function filter2(method) {
         return function(pred) {
           if (!isPredOrFunc(pred)) {
             throw new TypeError("List." + method + ": Pred or predicate function required");
@@ -3610,8 +3610,8 @@ var require_List = __commonJS({
         toString: inspect,
         valueOf,
         toArray,
-        head,
-        tail,
+        head: head2,
+        tail: tail2,
         cons,
         type: type3,
         equals: equals3,
@@ -3627,9 +3627,9 @@ var require_List = __commonJS({
         concat: concat("concat"),
         map: map3("map"),
         chain: chain("chain"),
-        reduce: reduce("reduce"),
-        filter: filter("filter")
-      }, obj[fl.of] = of2, obj[fl.equals] = equals3, obj[fl.concat] = concat(fl.concat), obj[fl.empty] = empty, obj[fl.map] = map3(fl.map), obj[fl.chain] = chain(fl.chain), obj[fl.reduce] = reduce(fl.reduce), obj[fl.filter] = filter(fl.filter), obj["@@type"] = _type, obj.constructor = List, obj;
+        reduce: reduce2("reduce"),
+        filter: filter2("filter")
+      }, obj[fl.of] = of2, obj[fl.equals] = equals3, obj[fl.concat] = concat(fl.concat), obj[fl.empty] = empty, obj[fl.map] = map3(fl.map), obj[fl.chain] = chain(fl.chain), obj[fl.reduce] = reduce2(fl.reduce), obj[fl.filter] = filter2(fl.filter), obj["@@type"] = _type, obj.constructor = List, obj;
     }
     List.of = _of2;
     List.empty = _empty;
@@ -5137,7 +5137,7 @@ var require_object = __commonJS({
       var result = Object.keys(m).reduce(rejectUnit(m), {});
       return Object.keys(x).reduce(rejectUnit(x), result);
     }
-    function filter(f, m) {
+    function filter2(f, m) {
       return Object.keys(m).reduce(function(acc, key) {
         if (f(m[key])) {
           acc[key] = m[key];
@@ -5165,7 +5165,7 @@ var require_object = __commonJS({
     }
     module.exports = {
       assign,
-      filter,
+      filter: filter2,
       map: map3,
       set,
       unset
@@ -5293,14 +5293,14 @@ var require_compose3 = __commonJS({
         throw new TypeError(err);
       }
       var fns = args.slice().reverse();
-      var head = fns[0];
-      if (!isFunction(head)) {
+      var head2 = fns[0];
+      if (!isFunction(head2)) {
         throw new TypeError(err);
       }
-      var tail = fns.slice(1).concat(function(x) {
+      var tail2 = fns.slice(1).concat(function(x) {
         return x;
       });
-      return tail.reduce(applyPipe, head);
+      return tail2.reduce(applyPipe, head2);
     }
     module.exports = compose2;
   }
@@ -5320,14 +5320,14 @@ var require_composeK = __commonJS({
         throw new TypeError(err);
       }
       var fns = args.slice().reverse();
-      var head = fns[0];
-      if (!isFunction(head)) {
+      var head2 = fns[0];
+      if (!isFunction(head2)) {
         throw new TypeError(err);
       }
       if (fns.length === 1) {
-        return head;
+        return head2;
       }
-      var tail = fns.slice(1).reduce(function(comp, fn) {
+      var tail2 = fns.slice(1).reduce(function(comp, fn) {
         if (!isFunction(fn)) {
           throw new TypeError(err);
         }
@@ -5341,7 +5341,7 @@ var require_composeK = __commonJS({
         return x;
       });
       return function() {
-        return tail(head.apply(null, arguments));
+        return tail2(head2.apply(null, arguments));
       };
     }
     module.exports = composeK;
@@ -5374,14 +5374,14 @@ var require_composeP = __commonJS({
         throw new TypeError(err);
       }
       var fns = args.reverse();
-      var head = fns[0];
-      if (!isFunction(head)) {
+      var head2 = fns[0];
+      if (!isFunction(head2)) {
         throw new TypeError(err);
       }
-      var tail = fns.slice(1).concat(function(x) {
+      var tail2 = fns.slice(1).concat(function(x) {
         return x;
       });
-      return tail.reduce(applyPipe, head);
+      return tail2.reduce(applyPipe, head2);
     }
     module.exports = composeP;
   }
@@ -5401,12 +5401,12 @@ var require_composeS = __commonJS({
         throw new TypeError(err);
       }
       var ms = args.slice().reverse();
-      var head = ms[0];
-      if (!isSemigroupoid(head)) {
+      var head2 = ms[0];
+      if (!isSemigroupoid(head2)) {
         throw new TypeError(err);
       }
       if (ms.length === 1) {
-        return head;
+        return head2;
       }
       return ms.slice().reduce(function(comp, m) {
         if (!isSameType(comp, m)) {
@@ -6051,14 +6051,14 @@ var require_pipe = __commonJS({
       if (!arguments.length) {
         throw new TypeError(err);
       }
-      var head = fns[0];
-      if (!isFunction(head)) {
+      var head2 = fns[0];
+      if (!isFunction(head2)) {
         throw new TypeError(err);
       }
-      var tail = fns.slice(1).concat(function(x) {
+      var tail2 = fns.slice(1).concat(function(x) {
         return x;
       });
-      return tail.reduce(applyPipe, head);
+      return tail2.reduce(applyPipe, head2);
     }
     module.exports = pipe2;
   }
@@ -6070,17 +6070,17 @@ var require_pipeK = __commonJS({
     var isChain = require_isChain();
     var isFunction = require_isFunction();
     var err = "pipeK: Chain returning functions of the same type required";
-    function pipeK(head) {
+    function pipeK(head2) {
       var fns = [], len = arguments.length - 1;
       while (len-- > 0)
         fns[len] = arguments[len + 1];
-      if (!(arguments.length && isFunction(head))) {
+      if (!(arguments.length && isFunction(head2))) {
         throw new TypeError(err);
       }
       if (arguments.length === 1) {
-        return head;
+        return head2;
       }
-      var tail = fns.reduce(function(comp, fn) {
+      var tail2 = fns.reduce(function(comp, fn) {
         if (!isFunction(fn)) {
           throw new TypeError(err);
         }
@@ -6094,7 +6094,7 @@ var require_pipeK = __commonJS({
         return x;
       });
       return function() {
-        return tail(head.apply(null, arguments));
+        return tail2(head2.apply(null, arguments));
       };
     }
     module.exports = pipeK;
@@ -6126,14 +6126,14 @@ var require_pipeP = __commonJS({
       if (!arguments.length) {
         throw new TypeError(err);
       }
-      var head = fns[0];
-      if (!isFunction(head)) {
+      var head2 = fns[0];
+      if (!isFunction(head2)) {
         throw new TypeError(err);
       }
-      var tail = fns.slice(1).concat(function(x) {
+      var tail2 = fns.slice(1).concat(function(x) {
         return x;
       });
-      return tail.reduce(applyPipe, head);
+      return tail2.reduce(applyPipe, head2);
     }
     module.exports = pipeP;
   }
@@ -6152,12 +6152,12 @@ var require_pipeS = __commonJS({
       if (!arguments.length) {
         throw new TypeError(err);
       }
-      var head = ms[0];
-      if (!isSemigroupoid(head)) {
+      var head2 = ms[0];
+      if (!isSemigroupoid(head2)) {
         throw new TypeError(err);
       }
       if (ms.length === 1) {
-        return head;
+        return head2;
       }
       return ms.slice().reduce(function(comp, m) {
         if (!isSameType(comp, m)) {
@@ -6201,8 +6201,8 @@ var require_setPath = __commonJS({
       return isObject(x) || isArray(x);
     };
     var pathErr = "setPath: Non-empty Array of non-empty Strings and/or Positive Integers required for first argument";
-    function setPath(path, val, obj) {
-      if (!isArray(path) || isEmpty(path)) {
+    function setPath(path2, val, obj) {
+      if (!isArray(path2) || isEmpty(path2)) {
         throw new TypeError(pathErr);
       }
       if (!isValid2(obj)) {
@@ -6210,14 +6210,14 @@ var require_setPath = __commonJS({
           "setPath: Object or Array required for third argument"
         );
       }
-      var key = path[0];
+      var key = path2[0];
       var newVal = val;
       if (!(isString(key) && !isEmpty(key) || isInteger(key) && key >= 0)) {
         throw new TypeError(pathErr);
       }
-      if (path.length > 1) {
-        var next = !isValid2(obj[key]) ? isInteger(path[1]) ? [] : {} : obj[key];
-        newVal = setPath(path.slice(1), val, next);
+      if (path2.length > 1) {
+        var next = !isValid2(obj[key]) ? isInteger(path2[1]) ? [] : {} : obj[key];
+        newVal = setPath(path2.slice(1), val, next);
       }
       if (isObject(obj)) {
         if (isString(key)) {
@@ -6296,18 +6296,18 @@ var require_unsetPath = __commonJS({
     var array = require_array();
     var object = require_object();
     var pathError = "unsetPath: Non-empty Array of non-empty Strings and/or Positive Integers required for first argument";
-    function unsetPath(path, obj) {
-      if (!isArray(path) || isEmpty(path)) {
+    function unsetPath(path2, obj) {
+      if (!isArray(path2) || isEmpty(path2)) {
         throw new TypeError(pathError);
       }
       if (!(isObject(obj) || isArray(obj))) {
         return obj;
       }
-      var key = path[0];
+      var key = path2[0];
       if (!(isString(key) && !isEmpty(key) || isInteger(key) && key >= 0)) {
         throw new TypeError(pathError);
       }
-      if (path.length === 1) {
+      if (path2.length === 1) {
         if (isArray(obj) && isInteger(key)) {
           return array.unset(key, obj);
         }
@@ -6321,9 +6321,9 @@ var require_unsetPath = __commonJS({
         return obj;
       }
       if (isArray(obj)) {
-        return array.set(key, unsetPath(path.slice(1), next), obj);
+        return array.set(key, unsetPath(path2.slice(1), next), obj);
       }
-      return object.set(key, unsetPath(path.slice(1), next), obj);
+      return object.set(key, unsetPath(path2.slice(1), next), obj);
     }
     module.exports = curry(unsetPath);
   }
@@ -6438,7 +6438,7 @@ var require_find = __commonJS({
         return !acc.found && predOrFunc(fn, cur) ? { found: true, value: cur } : acc;
       };
     };
-    function find(fn, foldable) {
+    function find3(fn, foldable) {
       if (!isFunction(fn) && !isSameType(Pred, fn)) {
         throw new TypeError("find: First argument must be a Pred or predicate");
       }
@@ -6448,7 +6448,7 @@ var require_find = __commonJS({
       var result = foldable.reduce(accumulator(fn), { found: false });
       return result.found ? Just(result.value) : Nothing();
     }
-    module.exports = curry(find);
+    module.exports = curry(find3);
   }
 });
 
@@ -7622,7 +7622,7 @@ var require_filter = __commonJS({
     var isObject = require_isObject();
     var object = require_object();
     var predOrFunc = require_predOrFunc();
-    function filter(pred, m) {
+    function filter2(pred, m) {
       if (!isPredOrFunc(pred)) {
         throw new TypeError("filter: Pred or predicate function required for first argument");
       }
@@ -7637,7 +7637,7 @@ var require_filter = __commonJS({
       }
       throw new TypeError("filter: Filterable or Object required for second argument");
     }
-    module.exports = curry(filter);
+    module.exports = curry(filter2);
   }
 });
 
@@ -7741,7 +7741,7 @@ var require_head = __commonJS({
     var ref = require_Maybe();
     var Nothing = ref.Nothing;
     var Just = ref.Just;
-    function head(m) {
+    function head2(m) {
       if (m && isFunction(m.head)) {
         return m.head();
       }
@@ -7751,12 +7751,12 @@ var require_head = __commonJS({
       if (isIterable(m)) {
         var cloned = cloneIterable(m);
         var iterator = cloned[Symbol.iterator]();
-        var head2 = iterator.next();
-        return head2.done ? Nothing() : Just(head2.value);
+        var head3 = iterator.next();
+        return head3.done ? Nothing() : Just(head3.value);
       }
       throw new TypeError("head: List or iterable required");
     }
-    module.exports = head;
+    module.exports = head2;
   }
 });
 
@@ -7923,7 +7923,7 @@ var require_reduce = __commonJS({
     var isFoldable = require_isFoldable();
     var isFunction = require_isFunction();
     var fl = require_flNames();
-    function reduce(fn, init, m) {
+    function reduce2(fn, init, m) {
       if (!isFunction(fn)) {
         throw new TypeError(
           "reduce: Function required for first argument"
@@ -7936,7 +7936,7 @@ var require_reduce = __commonJS({
       }
       return (m[fl.reduce] || m.reduce).call(m, fn, init);
     }
-    module.exports = curry(reduce);
+    module.exports = curry(reduce2);
   }
 });
 
@@ -8108,7 +8108,7 @@ var require_tail = __commonJS({
     var ref = require_Maybe();
     var Nothing = ref.Nothing;
     var Just = ref.Just;
-    function tail(m) {
+    function tail2(m) {
       if (!isNil3(m)) {
         if (isFunction(m.tail)) {
           return m.tail();
@@ -8119,7 +8119,7 @@ var require_tail = __commonJS({
       }
       throw new TypeError("tail: Array, String or List required");
     }
-    module.exports = tail;
+    module.exports = tail2;
   }
 });
 
@@ -11229,24 +11229,24 @@ var require_utils = __commonJS({
       constructor.prototype.constructor = constructor;
       props && Object.assign(constructor.prototype, props);
     }
-    function toFlatObject(sourceObj, destObj, filter) {
+    function toFlatObject(sourceObj, destObj, filter2) {
       var props;
       var i;
-      var prop3;
+      var prop4;
       var merged = {};
       destObj = destObj || {};
       do {
         props = Object.getOwnPropertyNames(sourceObj);
         i = props.length;
         while (i-- > 0) {
-          prop3 = props[i];
-          if (!merged[prop3]) {
-            destObj[prop3] = sourceObj[prop3];
-            merged[prop3] = true;
+          prop4 = props[i];
+          if (!merged[prop4]) {
+            destObj[prop4] = sourceObj[prop4];
+            merged[prop4] = true;
           }
         }
         sourceObj = Object.getPrototypeOf(sourceObj);
-      } while (sourceObj && (!filter || filter(sourceObj, destObj)) && sourceObj !== Object.prototype);
+      } while (sourceObj && (!filter2 || filter2(sourceObj, destObj)) && sourceObj !== Object.prototype);
       return destObj;
     }
     function endsWith(str, searchString, position) {
@@ -11461,7 +11461,7 @@ var require_AxiosError = __commonJS({
     Object.defineProperty(prototype, "isAxiosError", { value: true });
     AxiosError.from = function(error, code, config, request, response, customProps) {
       var axiosError = Object.create(prototype);
-      utils.toFlatObject(error, axiosError, function filter(obj) {
+      utils.toFlatObject(error, axiosError, function filter2(obj) {
         return obj !== Error.prototype;
       });
       AxiosError.call(axiosError, error.message, code, config, request, response);
@@ -11568,14 +11568,14 @@ var require_cookies = __commonJS({
     var utils = require_utils();
     module.exports = utils.isStandardBrowserEnv() ? function standardBrowserEnv() {
       return {
-        write: function write(name, value, expires, path, domain, secure) {
+        write: function write(name, value, expires, path2, domain, secure) {
           var cookie = [];
           cookie.push(name + "=" + encodeURIComponent(value));
           if (utils.isNumber(expires)) {
             cookie.push("expires=" + new Date(expires).toGMTString());
           }
-          if (utils.isString(path)) {
-            cookie.push("path=" + path);
+          if (utils.isString(path2)) {
+            cookie.push("path=" + path2);
           }
           if (utils.isString(domain)) {
             cookie.push("domain=" + domain);
@@ -12148,30 +12148,30 @@ var require_mergeConfig = __commonJS({
         }
         return source;
       }
-      function mergeDeepProperties(prop3) {
-        if (!utils.isUndefined(config2[prop3])) {
-          return getMergedValue(config1[prop3], config2[prop3]);
-        } else if (!utils.isUndefined(config1[prop3])) {
-          return getMergedValue(void 0, config1[prop3]);
+      function mergeDeepProperties(prop4) {
+        if (!utils.isUndefined(config2[prop4])) {
+          return getMergedValue(config1[prop4], config2[prop4]);
+        } else if (!utils.isUndefined(config1[prop4])) {
+          return getMergedValue(void 0, config1[prop4]);
         }
       }
-      function valueFromConfig2(prop3) {
-        if (!utils.isUndefined(config2[prop3])) {
-          return getMergedValue(void 0, config2[prop3]);
+      function valueFromConfig2(prop4) {
+        if (!utils.isUndefined(config2[prop4])) {
+          return getMergedValue(void 0, config2[prop4]);
         }
       }
-      function defaultToConfig2(prop3) {
-        if (!utils.isUndefined(config2[prop3])) {
-          return getMergedValue(void 0, config2[prop3]);
-        } else if (!utils.isUndefined(config1[prop3])) {
-          return getMergedValue(void 0, config1[prop3]);
+      function defaultToConfig2(prop4) {
+        if (!utils.isUndefined(config2[prop4])) {
+          return getMergedValue(void 0, config2[prop4]);
+        } else if (!utils.isUndefined(config1[prop4])) {
+          return getMergedValue(void 0, config1[prop4]);
         }
       }
-      function mergeDirectKeys(prop3) {
-        if (prop3 in config2) {
-          return getMergedValue(config1[prop3], config2[prop3]);
-        } else if (prop3 in config1) {
-          return getMergedValue(void 0, config1[prop3]);
+      function mergeDirectKeys(prop4) {
+        if (prop4 in config2) {
+          return getMergedValue(config1[prop4], config2[prop4]);
+        } else if (prop4 in config1) {
+          return getMergedValue(void 0, config1[prop4]);
         }
       }
       var mergeMap = {
@@ -12203,10 +12203,10 @@ var require_mergeConfig = __commonJS({
         "responseEncoding": defaultToConfig2,
         "validateStatus": mergeDirectKeys
       };
-      utils.forEach(Object.keys(config1).concat(Object.keys(config2)), function computeConfigValue(prop3) {
-        var merge = mergeMap[prop3] || mergeDeepProperties;
-        var configValue = merge(prop3);
-        utils.isUndefined(configValue) && merge !== mergeDirectKeys || (config[prop3] = configValue);
+      utils.forEach(Object.keys(config1).concat(Object.keys(config2)), function computeConfigValue(prop4) {
+        var merge = mergeMap[prop4] || mergeDeepProperties;
+        var configValue = merge(prop4);
+        utils.isUndefined(configValue) && merge !== mergeDirectKeys || (config[prop4] = configValue);
       });
       return config;
     };
@@ -12831,7 +12831,7 @@ var require_implementation = __commonJS({
   "node_modules/function-bind/implementation.js"(exports, module) {
     "use strict";
     var ERROR_MESSAGE = "Function.prototype.bind called on incompatible ";
-    var slice = Array.prototype.slice;
+    var slice3 = Array.prototype.slice;
     var toStr = Object.prototype.toString;
     var funcType = "[object Function]";
     module.exports = function bind3(that) {
@@ -12839,13 +12839,13 @@ var require_implementation = __commonJS({
       if (typeof target !== "function" || toStr.call(target) !== funcType) {
         throw new TypeError(ERROR_MESSAGE + target);
       }
-      var args = slice.call(arguments, 1);
+      var args = slice3.call(arguments, 1);
       var bound;
       var binder = function() {
         if (this instanceof bound) {
           var result = target.apply(
             this,
-            args.concat(slice.call(arguments))
+            args.concat(slice3.call(arguments))
           );
           if (Object(result) === result) {
             return result;
@@ -12854,7 +12854,7 @@ var require_implementation = __commonJS({
         } else {
           return target.apply(
             that,
-            args.concat(slice.call(arguments))
+            args.concat(slice3.call(arguments))
           );
         }
       };
@@ -14400,8 +14400,8 @@ var require_util = __commonJS({
       }
       return origin;
     };
-    function hasOwnProperty(obj, prop3) {
-      return Object.prototype.hasOwnProperty.call(obj, prop3);
+    function hasOwnProperty(obj, prop4) {
+      return Object.prototype.hasOwnProperty.call(obj, prop4);
     }
     var kCustomPromisifiedSymbol = typeof Symbol !== "undefined" ? Symbol("util.promisify.custom") : void 0;
     exports.promisify = function promisify(original) {
@@ -15014,19 +15014,19 @@ var require_merkle = __commonJS({
     exports.bufferToInt = bufferToInt;
     var arrayCompare = (a, b) => a.every((value, index) => b[index] === value);
     exports.arrayCompare = arrayCompare;
-    async function validatePath(id, dest, leftBound, rightBound, path) {
+    async function validatePath(id, dest, leftBound, rightBound, path2) {
       if (rightBound <= 0) {
         return false;
       }
       if (dest >= rightBound) {
-        return validatePath(id, 0, rightBound - 1, rightBound, path);
+        return validatePath(id, 0, rightBound - 1, rightBound, path2);
       }
       if (dest < 0) {
-        return validatePath(id, 0, 0, rightBound, path);
+        return validatePath(id, 0, 0, rightBound, path2);
       }
-      if (path.length == HASH_SIZE + NOTE_SIZE) {
-        const pathData = path.slice(0, HASH_SIZE);
-        const endOffsetBuffer = path.slice(pathData.length, pathData.length + NOTE_SIZE);
+      if (path2.length == HASH_SIZE + NOTE_SIZE) {
+        const pathData = path2.slice(0, HASH_SIZE);
+        const endOffsetBuffer = path2.slice(pathData.length, pathData.length + NOTE_SIZE);
         const pathDataHash = await hash([
           await hash(pathData),
           await hash(endOffsetBuffer)
@@ -15042,11 +15042,11 @@ var require_merkle = __commonJS({
         }
         return false;
       }
-      const left = path.slice(0, HASH_SIZE);
-      const right = path.slice(left.length, left.length + HASH_SIZE);
-      const offsetBuffer = path.slice(left.length + right.length, left.length + right.length + NOTE_SIZE);
+      const left = path2.slice(0, HASH_SIZE);
+      const right = path2.slice(left.length, left.length + HASH_SIZE);
+      const offsetBuffer = path2.slice(left.length + right.length, left.length + right.length + NOTE_SIZE);
       const offset = bufferToInt(offsetBuffer);
-      const remainder = path.slice(left.length + right.length + offsetBuffer.length);
+      const remainder = path2.slice(left.length + right.length + offsetBuffer.length);
       const pathHash = await hash([
         await hash(left),
         await hash(right),
@@ -16463,8 +16463,8 @@ function getErrorMap() {
   return overrideErrorMap;
 }
 var makeIssue = (params) => {
-  const { data, path, errorMaps, issueData } = params;
-  const fullPath = [...path, ...issueData.path || []];
+  const { data, path: path2, errorMaps, issueData } = params;
+  const fullPath = [...path2, ...issueData.path || []];
   const fullIssue = {
     ...issueData,
     path: fullPath
@@ -16562,10 +16562,10 @@ var errorUtil;
   errorUtil2.toString = (message) => typeof message === "string" ? message : message === null || message === void 0 ? void 0 : message.message;
 })(errorUtil || (errorUtil = {}));
 var ParseInputLazyPath = class {
-  constructor(parent, value, path, key) {
+  constructor(parent, value, path2, key) {
     this.parent = parent;
     this.data = value;
-    this._path = path;
+    this._path = path2;
     this._key = key;
   }
   get path() {
@@ -19595,6 +19595,14 @@ function _dispatchable(methodNames, transducerCreator, fn) {
   };
 }
 
+// node_modules/ramda/es/internal/_reduced.js
+function _reduced(x) {
+  return x && x["@@transducer/reduced"] ? x : {
+    "@@transducer/value": x,
+    "@@transducer/reduced": true
+  };
+}
+
 // node_modules/ramda/es/internal/_xfBase.js
 var xfBase_default = {
   init: function() {
@@ -19745,8 +19753,8 @@ var _xmap = /* @__PURE__ */ _curry2(function _xmap2(f, xf) {
 var xmap_default = _xmap;
 
 // node_modules/ramda/es/internal/_has.js
-function _has(prop3, obj) {
-  return Object.prototype.hasOwnProperty.call(obj, prop3);
+function _has(prop4, obj) {
+  return Object.prototype.hasOwnProperty.call(obj, prop4);
 }
 
 // node_modules/ramda/es/internal/_isArguments.js
@@ -19785,20 +19793,20 @@ var keys = typeof Object.keys === "function" && !hasArgsEnumBug ? /* @__PURE__ *
   if (Object(obj) !== obj) {
     return [];
   }
-  var prop3, nIdx;
+  var prop4, nIdx;
   var ks = [];
   var checkArgsLength = hasArgsEnumBug && isArguments_default(obj);
-  for (prop3 in obj) {
-    if (_has(prop3, obj) && (!checkArgsLength || prop3 !== "length")) {
-      ks[ks.length] = prop3;
+  for (prop4 in obj) {
+    if (_has(prop4, obj) && (!checkArgsLength || prop4 !== "length")) {
+      ks[ks.length] = prop4;
     }
   }
   if (hasEnumBug) {
     nIdx = nonEnumerableProps.length - 1;
     while (nIdx >= 0) {
-      prop3 = nonEnumerableProps[nIdx];
-      if (_has(prop3, obj) && !contains(ks, prop3)) {
-        ks[ks.length] = prop3;
+      prop4 = nonEnumerableProps[nIdx];
+      if (_has(prop4, obj) && !contains(ks, prop4)) {
+        ks[ks.length] = prop4;
       }
       nIdx -= 1;
     }
@@ -19840,26 +19848,36 @@ var nth = /* @__PURE__ */ _curry2(function nth2(offset, list) {
 var nth_default = nth;
 
 // node_modules/ramda/es/prop.js
-var prop = /* @__PURE__ */ _curry2(function prop2(p, obj) {
+var prop2 = /* @__PURE__ */ _curry2(function prop3(p, obj) {
   if (obj == null) {
     return;
   }
   return isInteger_default(p) ? nth_default(p, obj) : obj[p];
 });
-var prop_default = prop;
+var prop_default = prop2;
+
+// node_modules/ramda/es/pluck.js
+var pluck = /* @__PURE__ */ _curry2(function pluck2(p, list) {
+  return map_default(prop_default(p), list);
+});
+var pluck_default = pluck;
+
+// node_modules/ramda/es/reduce.js
+var reduce = /* @__PURE__ */ _curry3(_reduce);
+var reduce_default = reduce;
 
 // node_modules/ramda/es/internal/_assoc.js
-function _assoc(prop3, val, obj) {
-  if (isInteger_default(prop3) && isArray_default(obj)) {
+function _assoc(prop4, val, obj) {
+  if (isInteger_default(prop4) && isArray_default(obj)) {
     var arr = [].concat(obj);
-    arr[prop3] = val;
+    arr[prop4] = val;
     return arr;
   }
   var result = {};
   for (var p in obj) {
     result[p] = obj[p];
   }
-  result[prop3] = val;
+  result[prop4] = val;
   return result;
 }
 
@@ -19870,22 +19888,22 @@ var isNil = /* @__PURE__ */ _curry1(function isNil2(x) {
 var isNil_default = isNil;
 
 // node_modules/ramda/es/assocPath.js
-var assocPath = /* @__PURE__ */ _curry3(function assocPath2(path, val, obj) {
-  if (path.length === 0) {
+var assocPath = /* @__PURE__ */ _curry3(function assocPath2(path2, val, obj) {
+  if (path2.length === 0) {
     return val;
   }
-  var idx = path[0];
-  if (path.length > 1) {
-    var nextObj = !isNil_default(obj) && _has(idx, obj) ? obj[idx] : isInteger_default(path[1]) ? [] : {};
-    val = assocPath2(Array.prototype.slice.call(path, 1), val, nextObj);
+  var idx = path2[0];
+  if (path2.length > 1) {
+    var nextObj = !isNil_default(obj) && _has(idx, obj) ? obj[idx] : isInteger_default(path2[1]) ? [] : {};
+    val = assocPath2(Array.prototype.slice.call(path2, 1), val, nextObj);
   }
   return _assoc(idx, val, obj);
 });
 var assocPath_default = assocPath;
 
 // node_modules/ramda/es/assoc.js
-var assoc = /* @__PURE__ */ _curry3(function assoc2(prop3, val, obj) {
-  return assocPath_default([prop3], val, obj);
+var assoc = /* @__PURE__ */ _curry3(function assoc2(prop4, val, obj) {
+  return assocPath_default([prop4], val, obj);
 });
 var assoc_default = assoc;
 
@@ -19894,6 +19912,64 @@ var type = /* @__PURE__ */ _curry1(function type2(val) {
   return val === null ? "Null" : val === void 0 ? "Undefined" : Object.prototype.toString.call(val).slice(8, -1);
 });
 var type_default = type;
+
+// node_modules/ramda/es/internal/_pipe.js
+function _pipe(f, g) {
+  return function() {
+    return g.call(this, f.apply(this, arguments));
+  };
+}
+
+// node_modules/ramda/es/internal/_checkForMethod.js
+function _checkForMethod(methodname, fn) {
+  return function() {
+    var length = arguments.length;
+    if (length === 0) {
+      return fn();
+    }
+    var obj = arguments[length - 1];
+    return isArray_default(obj) || typeof obj[methodname] !== "function" ? fn.apply(this, arguments) : obj[methodname].apply(obj, Array.prototype.slice.call(arguments, 0, length - 1));
+  };
+}
+
+// node_modules/ramda/es/slice.js
+var slice = /* @__PURE__ */ _curry3(
+  /* @__PURE__ */ _checkForMethod("slice", function slice2(fromIndex, toIndex, list) {
+    return Array.prototype.slice.call(list, fromIndex, toIndex);
+  })
+);
+var slice_default = slice;
+
+// node_modules/ramda/es/tail.js
+var tail = /* @__PURE__ */ _curry1(
+  /* @__PURE__ */ _checkForMethod(
+    "tail",
+    /* @__PURE__ */ slice_default(1, Infinity)
+  )
+);
+var tail_default = tail;
+
+// node_modules/ramda/es/pipe.js
+function pipe() {
+  if (arguments.length === 0) {
+    throw new Error("pipe requires at least one argument");
+  }
+  return _arity(arguments[0].length, reduce_default(_pipe, arguments[0], tail_default(arguments)));
+}
+
+// node_modules/ramda/es/reverse.js
+var reverse = /* @__PURE__ */ _curry1(function reverse2(list) {
+  return _isString(list) ? list.split("").reverse().join("") : Array.prototype.slice.call(list, 0).reverse();
+});
+var reverse_default = reverse;
+
+// node_modules/ramda/es/compose.js
+function compose() {
+  if (arguments.length === 0) {
+    throw new Error("compose requires at least one argument");
+  }
+  return pipe.apply(this, reverse_default(arguments));
+}
 
 // node_modules/ramda/es/internal/_arrayFromIterator.js
 function _arrayFromIterator(iter) {
@@ -20061,6 +20137,99 @@ var _toISOString = typeof Date.prototype.toISOString === "function" ? function _
   return d.getUTCFullYear() + "-" + pad(d.getUTCMonth() + 1) + "-" + pad(d.getUTCDate()) + "T" + pad(d.getUTCHours()) + ":" + pad(d.getUTCMinutes()) + ":" + pad(d.getUTCSeconds()) + "." + (d.getUTCMilliseconds() / 1e3).toFixed(3).slice(2, 5) + "Z";
 };
 
+// node_modules/ramda/es/internal/_filter.js
+function _filter(fn, list) {
+  var idx = 0;
+  var len = list.length;
+  var result = [];
+  while (idx < len) {
+    if (fn(list[idx])) {
+      result[result.length] = list[idx];
+    }
+    idx += 1;
+  }
+  return result;
+}
+
+// node_modules/ramda/es/internal/_isObject.js
+function _isObject(x) {
+  return Object.prototype.toString.call(x) === "[object Object]";
+}
+
+// node_modules/ramda/es/internal/_xfilter.js
+var XFilter = /* @__PURE__ */ function() {
+  function XFilter2(f, xf) {
+    this.xf = xf;
+    this.f = f;
+  }
+  XFilter2.prototype["@@transducer/init"] = xfBase_default.init;
+  XFilter2.prototype["@@transducer/result"] = xfBase_default.result;
+  XFilter2.prototype["@@transducer/step"] = function(result, input) {
+    return this.f(input) ? this.xf["@@transducer/step"](result, input) : result;
+  };
+  return XFilter2;
+}();
+var _xfilter = /* @__PURE__ */ _curry2(function _xfilter2(f, xf) {
+  return new XFilter(f, xf);
+});
+var xfilter_default = _xfilter;
+
+// node_modules/ramda/es/filter.js
+var filter = /* @__PURE__ */ _curry2(
+  /* @__PURE__ */ _dispatchable(["fantasy-land/filter", "filter"], xfilter_default, function(pred, filterable) {
+    return _isObject(filterable) ? _reduce(function(acc, key) {
+      if (pred(filterable[key])) {
+        acc[key] = filterable[key];
+      }
+      return acc;
+    }, {}, keys_default(filterable)) : _filter(pred, filterable);
+  })
+);
+var filter_default = filter;
+
+// node_modules/ramda/es/internal/_xfind.js
+var XFind = /* @__PURE__ */ function() {
+  function XFind2(f, xf) {
+    this.xf = xf;
+    this.f = f;
+    this.found = false;
+  }
+  XFind2.prototype["@@transducer/init"] = xfBase_default.init;
+  XFind2.prototype["@@transducer/result"] = function(result) {
+    if (!this.found) {
+      result = this.xf["@@transducer/step"](result, void 0);
+    }
+    return this.xf["@@transducer/result"](result);
+  };
+  XFind2.prototype["@@transducer/step"] = function(result, input) {
+    if (this.f(input)) {
+      this.found = true;
+      result = _reduced(this.xf["@@transducer/step"](result, input));
+    }
+    return result;
+  };
+  return XFind2;
+}();
+var _xfind = /* @__PURE__ */ _curry2(function _xfind2(f, xf) {
+  return new XFind(f, xf);
+});
+var xfind_default = _xfind;
+
+// node_modules/ramda/es/find.js
+var find = /* @__PURE__ */ _curry2(
+  /* @__PURE__ */ _dispatchable(["find"], xfind_default, function find2(fn, list) {
+    var idx = 0;
+    var len = list.length;
+    while (idx < len) {
+      if (fn(list[idx])) {
+        return list[idx];
+      }
+      idx += 1;
+    }
+  })
+);
+var find_default = find;
+
 // node_modules/ramda/es/lens.js
 var lens = /* @__PURE__ */ _curry2(function lens2(getter, setter) {
   return function(toFunctorFn) {
@@ -20190,7 +20359,7 @@ function app_default(asset) {
         { name: "App-Name", value: "AssetSDK" },
         { name: "Title", value: asset.title },
         { name: "Description", value: asset.description },
-        { name: "Type", value: "page-source" },
+        { name: "Type", value: "source" },
         { name: "Asset-Id", value: asset.id }
       ]
     }
@@ -20200,17 +20369,82 @@ function app_default(asset) {
 // src/lib/index.js
 var { ReaderT, Async } = import_crocks.default;
 var { of, ask, lift } = ReaderT(Async);
-var doPost = (svc, asset) => Async.of(asset).map(over_default(lensProp_default("id"), (id) => id || crypto.randomUUID())).map((asset2) => {
+var doPost = (svc2, asset) => Async.of(asset).map(over_default(lensProp_default("id"), (id) => id || crypto.randomUUID())).map((asset2) => {
   if (propEq_default("type", "web-page", asset2)) {
     return web_page_default(asset2);
   } else if (propEq_default("type", "app", asset2)) {
     return app_default(asset2);
   }
 }).chain(
-  (asset2) => Async.fromPromise(svc.publish)(asset2).map((result) => ({ ok: true, id: asset2.id, contract: result.id }))
+  (asset2) => Async.fromPromise(svc2.publish)(asset2).map((result) => ({ ok: true, id: asset2.id, contract: result.id }))
 );
-var flow = (asset) => ask((svc) => doPost(svc, asset)).chain(lift);
+var flow = (asset) => ask((svc2) => doPost(svc2, asset)).chain(lift);
 var CreateAsset = (asset) => flow(asset);
+var GetAsset = (id, type3) => buildQuery(id, type3).chain(Async.fromPromise(svc.gql)).chain((edges) => {
+  const source = compose(
+    find_default((n) => find_default((t) => t.name === "Type", n.tags).value === "source"),
+    pluck_default("node")
+  )(edges);
+  const asset = compose(
+    head,
+    filter_default((n) => find_default((t) => t.name === "Type", n.tags).value === type3 && find_default((t) => t.name === "Uploader", n.tags) === void 0),
+    pluck_default("node")
+  )(edges);
+  return Async.all([
+    Async.fromPromise(svc.getData)(source.id),
+    Async.fromPromise(svc.getData)(asset.id)
+  ]).map(
+    ([s, a]) => ({
+      ...toAssetItem(asset),
+      content: s.data,
+      html: a.data
+    })
+  );
+});
+function buildQuery(id, type3) {
+  return {
+    query: `query ($ids: [String!]!, $cursor: String, $type: String!) {
+      transactions(first: 3, after: $cursor, 
+        tags: [
+          { name: "Type", values: [$type] },
+          { name: "Asset-Id", values: $ids }
+        ]) {
+        pageInfo {
+          hasNextPage
+        }
+        edges {
+          cursor
+          node {
+            id
+            tags {
+              name
+              value
+            }
+          }
+        }
+      }
+    }`,
+    variables: {
+      ids: [id],
+      type: type3
+    }
+  };
+}
+function toAssetItem(node) {
+  const getTag = compose(prop("value"), (n) => find_default(propEq_default("name", n), node.tags));
+  const published = getTag("Published") ? Number(getTag("Published")) : Date.now();
+  const topics = join(", ", pluck_default("value", filter_default((t) => /^Topic:/.test(t.name), node.tags)));
+  return {
+    id: getTag("Asset-Id"),
+    type: getTag("Type"),
+    title: getTag("Title"),
+    description: getTag("Description"),
+    transaction: node.id,
+    published,
+    stamps: 0,
+    topics
+  };
+}
 
 // src/services/asset-svc.js
 var import_arweave = __toESM(require_web(), 1);
@@ -20249,9 +20483,33 @@ function asset_svc_default(env) {
     }).then((res2) => res2.ok ? res2.json() : Promise.reject(res2));
     return { id, ...res };
   }
+  function run({ query, variable }) {
+    return fetch(`${URL2}/graphql`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ query, variables })
+    }).then((res) => res.ok ? res.json() : Promise.reject(res));
+  }
+  async function gql(q) {
+    let hasNextPage = true;
+    let edges = [];
+    let cursor = "";
+    while (hasNextPage) {
+      const result = await run({ query: q.query, variables: { ...q.variables, cursor } }).then(path(["data", "transactions"]));
+      if (result.edges && result.edges.length) {
+        edges = edges.concat(result.edges);
+        cursor = result.edges[result.edges.length - 1].cursor;
+      }
+      hasNextPage = result.pageInfo.hasNextPage;
+    }
+    return edges;
+  }
   return {
     publish,
-    getData
+    getData,
+    gql
   };
 }
 
@@ -20270,13 +20528,16 @@ var TradeableAsset = mod.object({
 });
 var src_default = Object.freeze({
   init: (env) => {
-    const svc = asset_svc_default(env);
+    const svc2 = asset_svc_default(env);
     return Object.freeze({
       create: async (asset) => {
         TradeableAsset.parse(asset);
         return CreateAsset(
           assoc_default("contractSRC", env.assetContractSrc, asset)
-        ).runWith(svc).toPromise();
+        ).runWith(svc2).toPromise();
+      },
+      get: async (id, type3) => {
+        return GetAsset(id, type3).runWith(svc2).toPromise();
       }
     });
   }
