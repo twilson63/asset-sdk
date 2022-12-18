@@ -53,7 +53,7 @@ export default function (env) {
     return { id, ...res }
   }
 
-  function run({ query, variable }) {
+  function run({ query, variables }) {
     return fetch(`${URL}/graphql`, {
       method: 'POST',
       headers: {

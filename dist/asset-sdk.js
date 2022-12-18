@@ -20485,7 +20485,7 @@ function asset_svc_default(env) {
     }).then((res2) => res2.ok ? res2.json() : Promise.reject(res2));
     return { id, ...res };
   }
-  function run({ query, variable }) {
+  function run({ query, variables }) {
     return fetch(`${URL2}/graphql`, {
       method: "POST",
       headers: {
