@@ -41,10 +41,9 @@ export const GetAsset = (id, type) => ask(svc => Async.of({ id, type })
       filter(n => find(t => t.name === 'Type', n.tags).value === type && find(t => t.name === 'Uploader', n.tags) === undefined),
       pluck('node')
     )(edges)
-    console.log(source)
-    console.log(asset)
+
     return Async.all([
-      Async.fromPromise(svc.getData)(source.id),
+      () => source ? Async.fromPromise(svc.getData)(source.id) : Promise.resolve('No Source Data...'),
       Async.fromPromise(svc.getData)(asset.id)
     ])
       .map(

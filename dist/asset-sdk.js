@@ -20562,10 +20562,8 @@ var GetAsset = (id, type3) => ask(
       filter_default((n) => find_default((t) => t.name === "Type", n.tags).value === type3 && find_default((t) => t.name === "Uploader", n.tags) === void 0),
       pluck_default("node")
     )(edges);
-    console.log(source);
-    console.log(asset);
     return Async.all([
-      Async.fromPromise(svc.getData)(source.id),
+      () => source ? Async.fromPromise(svc.getData)(source.id) : Promise.resolve("No Source Data..."),
       Async.fromPromise(svc.getData)(asset.id)
     ]).map(
       ([s, a]) => ({
