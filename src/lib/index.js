@@ -26,7 +26,8 @@ const doPost = (svc, asset) => Async.of(asset)
 const flow = asset => ask(svc => doPost(svc, asset)).chain(lift)
 
 export const CreateAsset = (asset) => flow(asset)
-export const GetAsset = (id, type) => ask(svc => buildQuery(id, type)
+export const GetAsset = (id, type) => ask(svc => Async.of({ id, type })
+  .map(({ id, type }) => buildQuery(id, type))
   .chain(Async.fromPromise(svc.gql))
   .chain(edges => {
     const source = compose(

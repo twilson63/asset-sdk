@@ -20381,7 +20381,7 @@ var doPost = (svc, asset) => Async.of(asset).map(over_default(lensProp_default("
 var flow = (asset) => ask((svc) => doPost(svc, asset)).chain(lift);
 var CreateAsset = (asset) => flow(asset);
 var GetAsset = (id, type3) => ask(
-  (svc) => buildQuery(id, type3).chain(Async.fromPromise(svc.gql)).chain((edges) => {
+  (svc) => Async.of({ id, type: type3 }).map(({ id: id2, type: type4 }) => buildQuery(id2, type4)).chain(Async.fromPromise(svc.gql)).chain((edges) => {
     const source = compose(
       find_default((n) => find_default((t) => t.name === "Type", n.tags).value === "source"),
       pluck_default("node")
