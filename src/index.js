@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { CreateAsset } from './lib/index.js'
+import { CreateAsset, GetAsset } from './lib/index.js'
 import services from './services/asset-svc.js'
 import { assoc } from 'ramda'
 
@@ -26,6 +26,9 @@ export default Object.freeze({
         return CreateAsset(
           assoc('contractSRC', env.assetContractSrc, asset)
         ).runWith(svc).toPromise()
+      },
+      get: async (id, type) => {
+        return GetAsset(id, type).runWith(svc).toPromise()
       }
     })
   }

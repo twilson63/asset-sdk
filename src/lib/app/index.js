@@ -42,7 +42,7 @@ export default function (asset) {
         { name: 'App-Name', value: 'AssetSDK' },
         { name: 'Title', value: asset.title },
         { name: 'Description', value: asset.description },
-        { name: 'Type', value: 'page-source' },
+        { name: 'Type', value: 'source' },
         { name: 'Asset-Id', value: asset.id }
       ]
     }
