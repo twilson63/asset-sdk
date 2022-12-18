@@ -11232,17 +11232,17 @@ var require_utils = __commonJS({
     function toFlatObject(sourceObj, destObj, filter2) {
       var props;
       var i;
-      var prop4;
+      var prop3;
       var merged = {};
       destObj = destObj || {};
       do {
         props = Object.getOwnPropertyNames(sourceObj);
         i = props.length;
         while (i-- > 0) {
-          prop4 = props[i];
-          if (!merged[prop4]) {
-            destObj[prop4] = sourceObj[prop4];
-            merged[prop4] = true;
+          prop3 = props[i];
+          if (!merged[prop3]) {
+            destObj[prop3] = sourceObj[prop3];
+            merged[prop3] = true;
           }
         }
         sourceObj = Object.getPrototypeOf(sourceObj);
@@ -12148,30 +12148,30 @@ var require_mergeConfig = __commonJS({
         }
         return source;
       }
-      function mergeDeepProperties(prop4) {
-        if (!utils.isUndefined(config2[prop4])) {
-          return getMergedValue(config1[prop4], config2[prop4]);
-        } else if (!utils.isUndefined(config1[prop4])) {
-          return getMergedValue(void 0, config1[prop4]);
+      function mergeDeepProperties(prop3) {
+        if (!utils.isUndefined(config2[prop3])) {
+          return getMergedValue(config1[prop3], config2[prop3]);
+        } else if (!utils.isUndefined(config1[prop3])) {
+          return getMergedValue(void 0, config1[prop3]);
         }
       }
-      function valueFromConfig2(prop4) {
-        if (!utils.isUndefined(config2[prop4])) {
-          return getMergedValue(void 0, config2[prop4]);
+      function valueFromConfig2(prop3) {
+        if (!utils.isUndefined(config2[prop3])) {
+          return getMergedValue(void 0, config2[prop3]);
         }
       }
-      function defaultToConfig2(prop4) {
-        if (!utils.isUndefined(config2[prop4])) {
-          return getMergedValue(void 0, config2[prop4]);
-        } else if (!utils.isUndefined(config1[prop4])) {
-          return getMergedValue(void 0, config1[prop4]);
+      function defaultToConfig2(prop3) {
+        if (!utils.isUndefined(config2[prop3])) {
+          return getMergedValue(void 0, config2[prop3]);
+        } else if (!utils.isUndefined(config1[prop3])) {
+          return getMergedValue(void 0, config1[prop3]);
         }
       }
-      function mergeDirectKeys(prop4) {
-        if (prop4 in config2) {
-          return getMergedValue(config1[prop4], config2[prop4]);
-        } else if (prop4 in config1) {
-          return getMergedValue(void 0, config1[prop4]);
+      function mergeDirectKeys(prop3) {
+        if (prop3 in config2) {
+          return getMergedValue(config1[prop3], config2[prop3]);
+        } else if (prop3 in config1) {
+          return getMergedValue(void 0, config1[prop3]);
         }
       }
       var mergeMap = {
@@ -12203,10 +12203,10 @@ var require_mergeConfig = __commonJS({
         "responseEncoding": defaultToConfig2,
         "validateStatus": mergeDirectKeys
       };
-      utils.forEach(Object.keys(config1).concat(Object.keys(config2)), function computeConfigValue(prop4) {
-        var merge = mergeMap[prop4] || mergeDeepProperties;
-        var configValue = merge(prop4);
-        utils.isUndefined(configValue) && merge !== mergeDirectKeys || (config[prop4] = configValue);
+      utils.forEach(Object.keys(config1).concat(Object.keys(config2)), function computeConfigValue(prop3) {
+        var merge = mergeMap[prop3] || mergeDeepProperties;
+        var configValue = merge(prop3);
+        utils.isUndefined(configValue) && merge !== mergeDirectKeys || (config[prop3] = configValue);
       });
       return config;
     };
@@ -14400,8 +14400,8 @@ var require_util = __commonJS({
       }
       return origin;
     };
-    function hasOwnProperty(obj, prop4) {
-      return Object.prototype.hasOwnProperty.call(obj, prop4);
+    function hasOwnProperty(obj, prop3) {
+      return Object.prototype.hasOwnProperty.call(obj, prop3);
     }
     var kCustomPromisifiedSymbol = typeof Symbol !== "undefined" ? Symbol("util.promisify.custom") : void 0;
     exports.promisify = function promisify(original) {
@@ -19753,8 +19753,8 @@ var _xmap = /* @__PURE__ */ _curry2(function _xmap2(f, xf) {
 var xmap_default = _xmap;
 
 // node_modules/ramda/es/internal/_has.js
-function _has(prop4, obj) {
-  return Object.prototype.hasOwnProperty.call(obj, prop4);
+function _has(prop3, obj) {
+  return Object.prototype.hasOwnProperty.call(obj, prop3);
 }
 
 // node_modules/ramda/es/internal/_isArguments.js
@@ -19793,20 +19793,20 @@ var keys = typeof Object.keys === "function" && !hasArgsEnumBug ? /* @__PURE__ *
   if (Object(obj) !== obj) {
     return [];
   }
-  var prop4, nIdx;
+  var prop3, nIdx;
   var ks = [];
   var checkArgsLength = hasArgsEnumBug && isArguments_default(obj);
-  for (prop4 in obj) {
-    if (_has(prop4, obj) && (!checkArgsLength || prop4 !== "length")) {
-      ks[ks.length] = prop4;
+  for (prop3 in obj) {
+    if (_has(prop3, obj) && (!checkArgsLength || prop3 !== "length")) {
+      ks[ks.length] = prop3;
     }
   }
   if (hasEnumBug) {
     nIdx = nonEnumerableProps.length - 1;
     while (nIdx >= 0) {
-      prop4 = nonEnumerableProps[nIdx];
-      if (_has(prop4, obj) && !contains(ks, prop4)) {
-        ks[ks.length] = prop4;
+      prop3 = nonEnumerableProps[nIdx];
+      if (_has(prop3, obj) && !contains(ks, prop3)) {
+        ks[ks.length] = prop3;
       }
       nIdx -= 1;
     }
@@ -19848,13 +19848,13 @@ var nth = /* @__PURE__ */ _curry2(function nth2(offset, list) {
 var nth_default = nth;
 
 // node_modules/ramda/es/prop.js
-var prop2 = /* @__PURE__ */ _curry2(function prop3(p, obj) {
+var prop = /* @__PURE__ */ _curry2(function prop2(p, obj) {
   if (obj == null) {
     return;
   }
   return isInteger_default(p) ? nth_default(p, obj) : obj[p];
 });
-var prop_default = prop2;
+var prop_default = prop;
 
 // node_modules/ramda/es/pluck.js
 var pluck = /* @__PURE__ */ _curry2(function pluck2(p, list) {
@@ -19867,17 +19867,17 @@ var reduce = /* @__PURE__ */ _curry3(_reduce);
 var reduce_default = reduce;
 
 // node_modules/ramda/es/internal/_assoc.js
-function _assoc(prop4, val, obj) {
-  if (isInteger_default(prop4) && isArray_default(obj)) {
+function _assoc(prop3, val, obj) {
+  if (isInteger_default(prop3) && isArray_default(obj)) {
     var arr = [].concat(obj);
-    arr[prop4] = val;
+    arr[prop3] = val;
     return arr;
   }
   var result = {};
   for (var p in obj) {
     result[p] = obj[p];
   }
-  result[prop4] = val;
+  result[prop3] = val;
   return result;
 }
 
@@ -19902,8 +19902,8 @@ var assocPath = /* @__PURE__ */ _curry3(function assocPath2(path3, val, obj) {
 var assocPath_default = assocPath;
 
 // node_modules/ramda/es/assoc.js
-var assoc = /* @__PURE__ */ _curry3(function assoc2(prop4, val, obj) {
-  return assocPath_default([prop4], val, obj);
+var assoc = /* @__PURE__ */ _curry3(function assoc2(prop3, val, obj) {
+  return assocPath_default([prop3], val, obj);
 });
 var assoc_default = assoc;
 
@@ -20604,7 +20604,7 @@ function buildQuery(id, type3) {
   };
 }
 function toAssetItem(node) {
-  const getTag = compose(prop("value"), (n) => find_default(propEq_default("name", n), node.tags));
+  const getTag = compose(prop_default("value"), (n) => find_default(propEq_default("name", n), node.tags));
   const published = getTag("Published") ? Number(getTag("Published")) : Date.now();
   const topics = join_default(", ", pluck_default("value", filter_default((t) => /^Topic:/.test(t.name), node.tags)));
   return {
