@@ -17,5 +17,9 @@
     "zod": "^3.20.2",
     "arweave": "^1.11.8"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "exports": {
+    ".": "dist/asset-sdk.js",
+    "./node": "dist/asset-sdk-node.js"
+  }
 }

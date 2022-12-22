@@ -17,7 +17,7 @@ export default function (asset) {
         { name: 'Title', value: asset.title },
         { name: 'Description', value: asset.description },
         { name: 'Type', value: 'app' },
-        { name: 'Published', value: Date.now() },
+        { name: 'Published', value: String(Date.now()) },
         { name: 'Asset-Id', value: asset.id },
         { name: 'App-Version', value: '0.3.0' },
         { name: 'Contract-Src', value: asset.contractSRC },

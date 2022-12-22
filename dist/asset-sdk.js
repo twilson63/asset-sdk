@@ -20503,7 +20503,7 @@ function app_default(asset) {
         { name: "Title", value: asset.title },
         { name: "Description", value: asset.description },
         { name: "Type", value: "app" },
-        { name: "Published", value: Date.now() },
+        { name: "Published", value: String(Date.now()) },
         { name: "Asset-Id", value: asset.id },
         { name: "App-Version", value: "0.3.0" },
         { name: "Contract-Src", value: asset.contractSRC },
@@ -20623,38 +20623,45 @@ function toAssetItem(node) {
 var import_arweave = __toESM(require_web(), 1);
 function asset_svc_default(env) {
   const ARWEAVE_URL = `${env.arweaveInfo.protocol}://${env.arweaveInfo.host}:${env.arweaveInfo.port}`;
-  const URL2 = `${env.warpGateway}/gateway/contracts/deploy`;
-  const arweave = import_arweave.default.default.init(env.arweaveInfo);
+  const URL2 = `${env.warpGateway}/gateway/contracts/register`;
+  const arweave = import_arweave.default.default ? import_arweave.default.default.init(env.arweaveInfo) : import_arweave.default.init(env.arweaveInfo);
   const getData = (id) => arweave.api.get(id);
   const publish = (asset) => {
     return dispatch(asset.source).then(() => dispatch(asset.asset)).then(({ id }) => post({ id, ...asset.asset }));
   };
   async function dispatch({ data, tags }) {
-    if (!arweaveWallet) {
-      return Promise.reject("No wallet found");
+    let result;
+    if (env.bundlr) {
+      result = await env.bundlr.upload(data, { tags });
+    } else {
+      if (!arweaveWallet) {
+        return Promise.reject("No wallet found");
+      }
+      const tx = await arweave.createTransaction({ data });
+      map_default((t) => tx.addTag(t.name, t.value), tags);
+      result = await arweaveWallet.dispatch(tx);
     }
-    const tx = await arweave.createTransaction({ data });
-    map_default((t) => tx.addTag(t.name, t.value), tags);
-    const result = await arweaveWallet.dispatch(tx);
-    return { data, tags, id: result.id };
+    return { id: result.id };
   }
-  async function post({ data, tags, id }) {
+  async function post({ id }) {
     if (!fetch) {
       return Promise.reject("fetch is required!");
     }
-    const tx = await arweave.createTransaction({ data });
-    map_default((t) => tx.addTag(t.name, t.value), tags);
-    await arweave.transactions.sign(tx, env.wallet);
-    tx.id = id;
     const res = await fetch(URL2, {
       method: "POST",
-      body: JSON.stringify({ contractTx: tx }),
+      body: JSON.stringify({ id }),
       headers: {
-        "Accept-Encoding": "gzip, deflate, br",
         "Content-Type": "application/json",
         Accept: "application/json"
       }
-    }).then((res2) => res2.ok ? res2.json() : Promise.reject(res2));
+    }).then((res2) => {
+      if (res2.ok) {
+        return res2.json();
+      } else {
+        console.log(res2);
+        throw new Error("Error while registering item!");
+      }
+    });
     return { id, ...res };
   }
   function run({ query, variables }) {

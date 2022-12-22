@@ -9,8 +9,9 @@ export default function (env) {
 
   const ARWEAVE_URL = `${env.arweaveInfo.protocol}://${env.arweaveInfo.host}:${env.arweaveInfo.port}`
 
-  const URL = `${env.warpGateway}/gateway/contracts/deploy`
-  const arweave = Arweave.default.init(env.arweaveInfo)
+  const URL = `${env.warpGateway}/gateway/contracts/register`
+
+  const arweave = Arweave.default ? Arweave.default.init(env.arweaveInfo) : Arweave.init(env.arweaveInfo)
 
   const getData = (id) => arweave.api.get(id)
   //.then(res => res.ok ? res.data : Promise.reject(res))
@@ -22,35 +23,44 @@ export default function (env) {
   }
 
   async function dispatch({ data, tags }) {
-    if (!arweaveWallet) {
-      return Promise.reject('No wallet found')
-    }
-    const tx = await arweave.createTransaction({ data })
-    map(t => tx.addTag(t.name, t.value), tags)
+    let result
+    if (env.bundlr) {
+      result = await env.bundlr.upload(data, { tags })
+    } else {
+      if (!arweaveWallet) {
+        return Promise.reject('No wallet found')
+      }
 
-    const result = await arweaveWallet.dispatch(tx)
-    return { data, tags, id: result.id }
+      const tx = await arweave.createTransaction({ data })
+      map(t => tx.addTag(t.name, t.value), tags)
+
+      result = await arweaveWallet.dispatch(tx)
+
+    }
+
+    return { id: result.id }
   }
 
-  async function post({ data, tags, id }) {
+  async function post({ id }) {
     if (!fetch) {
       return Promise.reject('fetch is required!')
     }
-    const tx = await arweave.createTransaction({ data })
-    map(t => tx.addTag(t.name, t.value), tags)
-
-    await arweave.transactions.sign(tx, env.wallet)
-    tx.id = id
 
     const res = await fetch(URL, {
       method: 'POST',
-      body: JSON.stringify({ contractTx: tx }),
+      body: JSON.stringify({ id }),
       headers: {
-        'Accept-Encoding': 'gzip, deflate, br',
         'Content-Type': 'application/json',
         Accept: 'application/json'
       }
-    }).then(res => res.ok ? res.json() : Promise.reject(res))
+    }).then(res => {
+      if (res.ok) {
+        return res.json()
+      } else {
+        console.log(res)
+        throw new Error('Error while registering item!')
+      }
+    })
 
     return { id, ...res }
   }

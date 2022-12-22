@@ -1,14 +1,7 @@
-import AssetSDK from './src/index.js'
-import crypto from 'crypto'
-import fetch from 'node-fetch'
+import AssetSDK from './src/node.js'
+import fs from 'fs'
 
-// set browser globals
-globalThis.crypto = crypto
-globalThis.arweaveWallet = {
-  dispatch: () => Promise.resolve(true),
-  sign: () => Promise.resolve({})
-}
-globalThis.fetch = fetch
+const jwk = JSON.parse(fs.readFileSync('./wallet.json', 'utf-8'))
 
 const asset = AssetSDK.init({
   arweaveInfo: { host: 'arweave.net', port: 443, protocol: 'https' },
@@ -18,7 +11,7 @@ const asset = AssetSDK.init({
   barContract: 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA',
   assetContractSrc: 'x0ojRwrcHBmZP20Y4SY0mgusMRx-IYTjg5W8c3UFoNs',
   cacheService: 'https://cache.permaweb.tools',
-  wallet: 'use_wallet'
+  wallet: jwk
 })
 
 async function main() {
