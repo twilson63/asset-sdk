@@ -1,6 +1,6 @@
 {
   "name": "@twilson63/asset-sdk",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "main": "dist/asset-sdk.js",
   "type": "module",
   "repository": "https://github.com/twilson63/asset-sdk.git",
