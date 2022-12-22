@@ -7,19 +7,20 @@
   "author": "Tom Wilson <tom@hyper.io>",
   "license": "MIT",
   "devDependencies": {
-    "@bundlr-network/client": "^0.9.11",
     "@types/crocks": "^0.12.0",
     "@types/ramda": "^0.28.20",
-    "esbuild": "^0.16.5",
-    "node-fetch": "^3.3.0",
-    "crocks": "^0.12.4",
-    "ramda": "^0.28.0",
-    "zod": "^3.20.2",
-    "arweave": "^1.11.8"
+    "esbuild": "^0.16.5"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@bundlr-network/client": "^0.9.11",
+    "arweave": "^1.11.8",
+    "crocks": "^0.12.4",
+    "node-fetch": "^3.3.0",
+    "ramda": "^0.28.0",
+    "zod": "^3.20.2"
+  },
   "exports": {
-    ".": "dist/asset-sdk.js",
-    "./node": "dist/asset-sdk-node.js"
+    ".": "./dist/asset-sdk.js",
+    "./node": "./dist/asset-sdk-node.js"
   }
 }
