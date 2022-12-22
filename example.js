@@ -5,7 +5,8 @@ const jwk = JSON.parse(fs.readFileSync('./wallet.json', 'utf-8'))
 
 const asset = AssetSDK.init({
   arweaveInfo: { host: 'arweave.net', port: 443, protocol: 'https' },
-  warpGateway: 'https://gateway.redstone.finance',
+  //warpGateway: 'https://gateway.redstone.finance',
+  warpGateway: 'https://d1o5nlqr4okus2.cloudfront.net',
   bundlrNode: 'https://node2.bundlr.network',
   stampContract: 'FMRHYgSijiUNBrFy-XqyNNXenHsCV0ThR4lGAPO4chA',
   barContract: 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA',

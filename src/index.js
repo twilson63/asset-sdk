@@ -3,7 +3,6 @@ import { CreateAsset, GetAsset } from './lib/index.js'
 import services from './services/asset-svc.js'
 import { assoc } from 'ramda'
 
-
 const TradeableAsset = z.object({
   id: z.string().optional(),
   title: z.string().min(3).max(180),

@@ -21,6 +21,6 @@
   },
   "exports": {
     ".": "./dist/asset-sdk.js",
-    "./node": "./dist/asset-sdk-node.js"
+    "./node": "./src/node.js"
   }
 }
