@@ -1,16 +1,24 @@
 {
-  "name": "@twilson63/asset-sdk",
+  "name": "@permaweb/asset-sdk",
   "version": "0.0.21",
+  "source": "src/index.ts",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "require": "./dist/asset-sdk.js",
+    "default": "./dist/asset-sdk.modern.mjs"
+  },
   "main": "dist/asset-sdk.js",
-  "type": "module",
+  "module": "./dist/asset-sdk.modern.mjs",
+  "unpkg": "./dist/asset-sdk.umd.js",
   "repository": "https://github.com/twilson63/asset-sdk.git",
   "author": "Tom Wilson <tom@hyper.io>",
-  "types": "./dist/node.d.ts",
+  "types": "./dist/index.d.ts",
   "license": "MIT",
   "devDependencies": {
     "@types/crocks": "^0.12.0",
     "@types/ramda": "^0.28.20",
     "esbuild": "^0.16.5",
+    "microbundle": "^0.15.1",
     "typescript": "^4.9.4"
   },
   "dependencies": {
@@ -21,8 +29,8 @@
     "ramda": "^0.28.0",
     "zod": "^3.20.2"
   },
-  "exports": {
-    ".": "./dist/asset-sdk.js",
-    "./node": "./src/node.js"
+  "scripts": {
+    "build": "microbundle",
+    "dev": "microbundle watch"
   }
 }
