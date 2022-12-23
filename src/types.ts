@@ -1,10 +1,13 @@
 import { z } from 'zod'
 import Arweave from 'arweave'
 import Bundlr from '@bundlr-network/client'
+import { Warp } from 'warp-contracts'
 
 export const Environment = z.object({
   arweave: z.instanceof(Arweave),
   bundlr: z.instanceof(Bundlr),
+  warp: z.instanceof(Warp),
+  wallet: z.any(),
   contracts: z.object({
     stamp: z.string().default('FMRHYgSijiUNBrFy-XqyNNXenHsCV0ThR4lGAPO4chA'),
     bar: z.string().default('VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA')

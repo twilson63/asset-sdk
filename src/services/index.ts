@@ -1,6 +1,8 @@
 import { EnvironmentType } from '../types'
 import { v4 } from 'uuid'
-import { concat, map, path, prop } from 'ramda'
+import { compose, concat, map, path, prop, propEq, find, propOr, startsWith, filter } from 'ramda'
+import { ArweaveSigner } from 'arbundles/src/signing'
+import { createData } from 'arbundles'
 
 interface DataItem {
   data: any,
@@ -11,13 +13,15 @@ export default function (env: EnvironmentType) {
   const getData = (id: string) => env.arweave.api.get(id).then(prop('data'))
 
   const publish = (asset: { source: DataItem, asset: DataItem }) => {
-    asset.asset.tags = concat([
-      { name: 'App-Name', value: 'SmartWeaveContract' },
-      { name: 'App-Version', value: '0.3.0' },
-      { name: 'Contract-Src', value: env.sources.asset }
-    ], asset.asset.tags)
+    // asset.asset.tags = concat([
+    //   { name: 'App-Name', value: 'SmartWeaveContract' },
+    //   { name: 'App-Version', value: '0.3.0' },
+    //   { name: 'Contract-Src', value: env.sources.asset }
+    // ], asset.asset.tags)
     return dispatch(asset.source)
       .then(() => dispatch(asset.asset))
+      .then(({ id }) => deployToWarp(asset.asset, id))
+
     //.then(({ id }) => post({ id, ...asset.asset }))
   }
 
@@ -25,32 +29,52 @@ export default function (env: EnvironmentType) {
     return env.bundlr.upload(dataItem.data, { tags: dataItem.tags })
   }
 
-  /*
-  async function post({ id }) {
-    if (!fetch) {
-      return Promise.reject('fetch is required!')
+  async function deployToWarp(dataItem: DataItem, id: string) {
+    if (!env.wallet) {
+      throw new Error('Wallet is required!')
     }
 
-    const res = await fetch(URL, {
-      method: 'POST',
-      body: JSON.stringify({ id }),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      }
-    }).then(res => {
-      if (res.ok) {
-        return res.json()
-      } else {
-        console.log(res)
-        throw new Error('Error while registering item!')
-      }
-    })
+    const signer = new ArweaveSigner(env.wallet)
 
-    return { id, ...res }
+    const getTag = (name: string) => compose(
+      propOr('', 'value'),
+      find(propEq('name', name))
+    )(dataItem.tags)
+
+    const getTopics = filter(
+      compose(
+        startsWith('Topic:'),
+        prop('name')
+      )
+    )(dataItem.tags)
+
+    const warpTags: { name: string, value: string }[] = [
+      { name: 'App-Name', value: 'SmartWeaveContract' },
+      { name: 'App-Version', value: '0.3.0' },
+      { name: 'Contract-Src', value: env.sources.asset }
+      { name: 'Content-Type', value: "application/x.arweave-manifest+json" },
+      { name: 'Title', value: getTag('Title') as string },
+      { name: 'Description', value: getTag('Description') as string },
+      { name: 'Type', value: getTag('Type') as string },
+      { name: 'Published', value: getTag('Published') as string },
+      { name: 'Asset-Id', value: getTag('Asset-Id') as string },
+      { name: 'Init-State', value: getTag('Init-State') as string },
+      // need to add topics
+      ...getTopics
+    ]
+
+    const item = createData(JSON.stringify({
+      manifest: 'arweave/paths',
+      version: '0.1.0',
+      index: { path: 'index.html' },
+      paths: { 'index.html': { id } }
+    }), signer, { tags: warpTags })
+
+    await item.sign(signer)
+
+    await env.warp.createContract.deployBundled(item.getRaw())
+    return { contract: item.id, id: getTag('Asset-Id') }
   }
-  */
-
 
   function run(data: { query: string, variables: Record<string, any> }): Promise<any> {
     return env.arweave.api.post('graphql', data).then(path(['data', 'data', 'transactions']))
