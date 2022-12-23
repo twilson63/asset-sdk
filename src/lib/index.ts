@@ -1,4 +1,6 @@
 import { compose, find, pluck, propEq, prop, join, filter } from 'ramda'
+import { AtomicAssetType } from '../types'
+import createAppAssetData from './app'
 
 // @ts-ignore
 const findSource = find(compose(
@@ -13,6 +15,13 @@ const findContent = type => find(compose(
   prop('tags')))
 
 export default function (svc: any) {
+  function createAsset(asset: AtomicAssetType) {
+    if (!asset.id) {
+      asset.id = svc.randomUUID()
+    }
+
+    return svc.publish(createAppAssetData(asset))
+  }
 
   function getAsset(id: string, type: string) {
     return buildQuery(id, type)
@@ -33,7 +42,8 @@ export default function (svc: any) {
 
   }
   return {
-    getAsset
+    getAsset,
+    createAsset
   }
 }
 

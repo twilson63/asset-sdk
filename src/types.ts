@@ -22,3 +22,18 @@ export type EnvironmentType = z.infer<typeof Environment>
 export interface SDK {
   init: any
 }
+
+export const AtomicAsset = z.object({
+  id: z.string().optional(),
+  title: z.string().min(1).max(180),
+  description: z.string().max(300),
+  type: z.string(),
+  topics: z.array(z.string()),
+  balances: z.record(z.string(), z.number()),
+  content: z.string().optional(),
+  html: z.string().optional(),
+  forks: z.string().optional(),
+  appId: z.string().optional()
+})
+
+export type AtomicAssetType = z.infer<typeof AtomicAsset>

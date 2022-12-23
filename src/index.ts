@@ -1,4 +1,4 @@
-import { EnvironmentType, Environment, SDK } from './types'
+import { EnvironmentType, Environment, SDK, AtomicAsset, AtomicAssetType } from './types'
 import services from './services/index'
 import api from './lib/index'
 
@@ -7,6 +7,10 @@ const sdk: SDK = {
     env = Environment.parse(env)
     const svc = services(env)
     return {
+      create: (asset: AtomicAssetType) => {
+        asset = AtomicAsset.parse(asset)
+        return api(svc).createAsset(asset)
+      },
       get: (id: string, type: string) => api(svc).getAsset(id, type)
     }
   }

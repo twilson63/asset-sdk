@@ -1,31 +1,30 @@
 import { EnvironmentType } from '../types'
+import { v4 } from 'uuid'
+import { concat, map, path, prop } from 'ramda'
 
-import { map, path, prop } from 'ramda'
+interface DataItem {
+  data: any,
+  tags: { name: string, value: string }[]
+}
 
-//const URL = 'https://gateway.redstone.finance/gateway/contracts/deploy'
-
-// need to inject env into service...
 export default function (env: EnvironmentType) {
-
-  //const ARWEAVE_URL = `${env.arweaveInfo.protocol}://${env.arweaveInfo.host}:${env.arweaveInfo.port}`
-
-  //const URL = `${env.warpGateway}/gateway/contracts/register`
-
-  //const arweave = Arweave.default ? Arweave.default.init(env.arweaveInfo) : Arweave.init(env.arweaveInfo)
-
   const getData = (id: string) => env.arweave.api.get(id).then(prop('data'))
 
-  /*
-  const publish = (asset) => {
+  const publish = (asset: { source: DataItem, asset: DataItem }) => {
+    asset.asset.tags = concat([
+      { name: 'App-Name', value: 'SmartWeaveContract' },
+      { name: 'App-Version', value: '0.3.0' },
+      { name: 'Contract-Src', value: env.sources.asset }
+    ], asset.asset.tags)
     return dispatch(asset.source)
       .then(() => dispatch(asset.asset))
     //.then(({ id }) => post({ id, ...asset.asset }))
   }
 
-  async function dispatch({ data, tags }) {
-    return env.bundlr.upload(data, { tags })
+  async function dispatch(dataItem: DataItem) {
+    return env.bundlr.upload(dataItem.data, { tags: dataItem.tags })
   }
-  */
+
   /*
   async function post({ id }) {
     if (!fetch) {
@@ -77,9 +76,13 @@ export default function (env: EnvironmentType) {
     return edges
   }
 
+  function randomUUID() {
+    return v4()
+  }
 
   return {
-    //publish,
+    randomUUID,
+    publish,
     getData,
     gql
   }
