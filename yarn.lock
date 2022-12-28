@@ -5720,10 +5720,10 @@ vm2@3.9.11:
     acorn "^8.7.0"
     acorn-walk "^8.2.0"
 
-warp-contracts@1.2.38:
-  version "1.2.38"
-  resolved "https://registry.yarnpkg.com/warp-contracts/-/warp-contracts-1.2.38.tgz#2f6833dbc94e6bc70472d091bf50ef12aeeeb493"
-  integrity sha512-E5ns8CI5sTKkurA8FZTMdQZlEks3SUDlc9o+4Nw+5zcxcwQZNMwsoxHddynYi8OlMDQy6xDCi4ooSTwQAwuvrg==
+warp-contracts@^1.2.39:
+  version "1.2.39"
+  resolved "https://registry.yarnpkg.com/warp-contracts/-/warp-contracts-1.2.39.tgz#1c1e3105d0e3679c1227a90be3f614450e1d6e31"
+  integrity sha512-vusVCSE7caIVtrJvGiM1RbxZTmmdC2NFp0sp+jCBfRXI8RUNun1HvZhIAw6AVQvN8xTD3NZ60yNuE+12gCXW1A==
   dependencies:
     "@assemblyscript/loader" "^0.19.23"
     "@idena/vrf-js" "^1.0.1"

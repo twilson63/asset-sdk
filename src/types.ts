@@ -36,7 +36,8 @@ export const AtomicAsset = z.object({
   content: z.string().optional(),
   html: z.string().optional(),
   forks: z.string().optional(),
-  appId: z.string().optional()
+  appId: z.string().optional(),
+  meta: z.string().optional()
 })
 
 export type AtomicAssetType = z.infer<typeof AtomicAsset>

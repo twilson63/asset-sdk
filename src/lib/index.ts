@@ -31,7 +31,7 @@ export default function (svc: any) {
       )
       .then(
         asset => Promise.all([
-          asset.source ? svc.getData(asset.source.id) : Promise.resolve('No Source Found.'),
+          asset.source ? svc.getData(asset.asset.meta) : Promise.resolve('No Source Found.'),
           asset.asset ? svc.getData(asset.asset.id) : Promise.resolve('No Content Found')
         ]).then(([content, html]) => ({
           ...toAssetItem(asset.asset),
@@ -53,11 +53,11 @@ function toAssetItem(node: any) {
   // @ts-ignore
   const topics = join(', ', pluck('value', filter(t => /^Topic:/.test(t.name), node.tags)))
   return {
-    id: getTag('Asset-Id'),
+    id: node.id,
     type: getTag('Type'),
     title: getTag('Title'),
     description: getTag('Description'),
-    transaction: node.id,
+    meta: getTag('META'),
     published,
     stamps: 0,
     topics
@@ -73,11 +73,11 @@ function pluckData(type: string) {
 
 function buildQuery(id: string, type: string) {
   return Promise.resolve({
-    query: `query ($ids: [String!]!, $cursor: String, $type: String!) {
+    query: `query ($ids: [ID!], $cursor: String, $type: String!) {
       transactions(first: 3, after: $cursor, 
+        ids: $ids,
         tags: [
-          { name: "Type", values: [$type] },
-          { name: "Asset-Id", values: $ids }
+          { name: "Type", values: [$type] }
         ]) {
         pageInfo {
           hasNextPage

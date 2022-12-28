@@ -4,8 +4,7 @@ import { AtomicAssetType } from '../types'
 export default function (asset: AtomicAssetType) {
   const topicTags = map(v => ({ name: `Topic:${v}`, value: v }), asset.topics)
   return {
-    id: asset.id,
-    asset: {
+    target: {
       data: asset.html,
       tags: [
         { name: 'Content-Type', value: 'text/html' },
@@ -13,7 +12,6 @@ export default function (asset: AtomicAssetType) {
         { name: 'Description', value: asset.description },
         { name: 'Type', value: 'app' },
         { name: 'Published', value: String(Date.now()) },
-        { name: 'Asset-Id', value: asset.id },
         { name: 'Page-Code', value: asset.id },
         { name: 'App-Id', value: asset.appId },
         {
@@ -35,8 +33,7 @@ export default function (asset: AtomicAssetType) {
         { name: 'App-Name', value: 'AssetSDK' },
         { name: 'Title', value: asset.title },
         { name: 'Description', value: asset.description },
-        { name: 'Type', value: 'source' },
-        { name: 'Asset-Id', value: asset.id }
+        { name: 'Type', value: 'source' }
       ]
     }
   }

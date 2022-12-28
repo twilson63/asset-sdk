@@ -30,7 +30,7 @@
     "node-fetch": "^3.3.0",
     "ramda": "^0.28.0",
     "uuid": "^9.0.0",
-    "warp-contracts": "1.2.38",
+    "warp-contracts": "^1.2.39",
     "zod": "^3.20.2"
   },
   "scripts": {
