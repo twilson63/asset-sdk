@@ -7,6 +7,7 @@ export const Environment = z.object({
   arweave: z.instanceof(Arweave),
   bundlr: z.instanceof(Bundlr),
   warp: z.instanceof(Warp),
+  warpCacheURL: z.string().default('https://cache.permapages.app'),
   wallet: z.any(),
   contracts: z.object({
     stamp: z.string().default('FMRHYgSijiUNBrFy-XqyNNXenHsCV0ThR4lGAPO4chA'),
@@ -41,3 +42,4 @@ export const AtomicAsset = z.object({
 })
 
 export type AtomicAssetType = z.infer<typeof AtomicAsset>
+export type FPJSON = Array<string | string[]>

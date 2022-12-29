@@ -1,6 +1,8 @@
-import { EnvironmentType } from '../types'
+import { EnvironmentType, FPJSON } from '../types'
 import { v4 } from 'uuid'
 import { compose, concat, map, path, prop, propEq, find, propOr, startsWith, filter } from 'ramda'
+// @ts-ignore
+import fpjson from 'fpjson-lang'
 
 interface DataItem {
   data: any,
@@ -37,7 +39,7 @@ export default function (env: EnvironmentType) {
 
   function run(data: { query: string, variables: Record<string, any> }): Promise<any> {
     return env.arweave.api.post('graphql', data)
-      .then(x => (console.log('result', x.data.errors), x))
+      //.then(x => (console.log('result', x.data.errors), x))
       .then(path(['data', 'data', 'transactions']))
   }
 
@@ -64,11 +66,40 @@ export default function (env: EnvironmentType) {
     return v4()
   }
 
+  function stampCache(filter: FPJSON) {
+    return fetch(`${env.warpCacheURL}/${env.contracts.stamp}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(filter)
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json()
+        } else {
+          // fallback to warp
+          return env.warp
+            .contract(env.contracts.stamp)
+            .connect(env.wallet)
+            .setEvaluationOptions({
+              internalWrites: true,
+              allowBigInt: true
+            })
+            .readState()
+            .then((result) => fpjson([filter, result.cachedValue.state]))
+        }
+      })
+
+  }
+
   return {
     randomUUID,
     publish,
     getData,
-    gql
+    gql,
+    stampCache
   }
 
 }

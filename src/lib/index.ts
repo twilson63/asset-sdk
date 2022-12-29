@@ -1,4 +1,4 @@
-import { compose, find, pluck, propEq, prop, join, filter } from 'ramda'
+import { compose, find, pluck, propEq, prop, join, filter, assoc } from 'ramda'
 import { AtomicAssetType } from '../types'
 import createAppAssetData from './app'
 
@@ -39,6 +39,19 @@ export default function (svc: any) {
           html
         }))
       )
+      .then(asset =>
+        svc.stampCache(['compose',
+          ['length'],
+          ['filter', ['propEq', 'asset', asset.id]],
+          ['values'],
+          ['prop', 'stamps']
+        ]).then((stamps: { result: number }) => {
+          return assoc('stamps', stamps.result, asset)
+        })
+      )
+    // get stamp count via cache
+    // svc.stampCache([FPJSON])
+
 
   }
   return {
@@ -48,6 +61,7 @@ export default function (svc: any) {
 }
 
 function toAssetItem(node: any) {
+  //console.log('node: ', node)
   const getTag = compose(prop('value'), n => find(propEq('name', n), node.tags))
   const published = getTag('Published') ? Number(getTag('Published')) : Date.now()
   // @ts-ignore
