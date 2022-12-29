@@ -138,7 +138,7 @@ function createAssetData(asset: AtomicAssetType) {
             balances: asset.balances,
             pairs: [],
             name: `${asset.type}-${asset.groupId}`,
-            ticker: "APP",
+            ticker: asset.type.toUpperCase(),
             settings: [['isTradeable', true]]
           })
         },
@@ -152,7 +152,7 @@ function createAssetData(asset: AtomicAssetType) {
         { name: 'App-Name', value: 'AssetSDK' },
         { name: 'Title', value: asset.title },
         { name: 'Description', value: asset.description },
-        { name: 'Type', value: `${type}-meta` }
+        { name: 'Type', value: `${asset.type}-meta` }
       ]
     }
   }

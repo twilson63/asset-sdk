@@ -16,8 +16,8 @@ async function main() {
   //console.log(result)
 
   const result = await SDK.create({
-    content: "",
-    html: "",
+    content: "# Hello World",
+    html: "<h1>Hello World</h1>",
     groupId: "TEST",
     type: "app",
     title: "Test Application",
