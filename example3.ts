@@ -18,7 +18,7 @@ async function main() {
   const result = await SDK.create({
     content: "",
     html: "",
-    appId: "TEST",
+    groupId: "TEST",
     type: "app",
     title: "Test Application",
     description: "Fair Forks test",

@@ -1,6 +1,5 @@
-import { compose, find, pluck, propEq, prop, join, filter, assoc } from 'ramda'
+import { compose, find, pluck, propEq, prop, join, filter, assoc, map } from 'ramda'
 import { AtomicAssetType } from '../types'
-import createAppAssetData from './app'
 
 // @ts-ignore
 const findSource = find(compose(
@@ -16,11 +15,11 @@ const findContent = type => find(compose(
 
 export default function (svc: any) {
   function createAsset(asset: AtomicAssetType) {
-    if (!asset.id) {
-      asset.id = svc.randomUUID()
+    if (!asset.groupId) {
+      asset.groupId = svc.randomUUID()
     }
 
-    return svc.publish(createAppAssetData(asset))
+    return svc.publish(createAssetData(asset))
   }
 
   function getAsset(id: string, type: string) {
@@ -54,9 +53,15 @@ export default function (svc: any) {
 
 
   }
+
+  function stampAsset(id: string) {
+    return svc.stamp(id)
+  }
+
   return {
     getAsset,
-    createAsset
+    createAsset,
+    stampAsset
   }
 }
 
@@ -113,4 +118,42 @@ function buildQuery(id: string, type: string) {
       type
     }
   })
+}
+
+function createAssetData(asset: AtomicAssetType) {
+  const topicTags = map(v => ({ name: `Topic:${v}`, value: v }), asset.topics)
+  return {
+    target: {
+      data: asset.html,
+      tags: [
+        { name: 'Content-Type', value: asset.contentType },
+        { name: 'Title', value: asset.title },
+        { name: 'Description', value: asset.description },
+        { name: 'Type', value: asset.type },
+        { name: 'Published', value: String(Date.now()) },
+        { name: 'Page-Code', value: asset.groupId },
+        { name: 'Group-Id', value: asset.groupId },
+        {
+          name: 'Init-State', value: JSON.stringify({
+            balances: asset.balances,
+            pairs: [],
+            name: `${asset.type}-${asset.groupId}`,
+            ticker: "APP",
+            settings: [['isTradeable', true]]
+          })
+        },
+        ...topicTags
+      ]
+    },
+    meta: {
+      data: asset.content,
+      tags: [
+        { name: 'Content-Type', value: 'text/markdown' },
+        { name: 'App-Name', value: 'AssetSDK' },
+        { name: 'Title', value: asset.title },
+        { name: 'Description', value: asset.description },
+        { name: 'Type', value: `${type}-meta` }
+      ]
+    }
+  }
 }

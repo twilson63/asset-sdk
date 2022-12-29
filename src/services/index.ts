@@ -1,6 +1,6 @@
 import { EnvironmentType, FPJSON } from '../types'
 import { v4 } from 'uuid'
-import { compose, concat, map, path, prop, propEq, find, propOr, startsWith, filter } from 'ramda'
+import { compose, concat, map, path, prop, propEq, find, propOr, startsWith, filter, equals, not } from 'ramda'
 // @ts-ignore
 import fpjson from 'fpjson-lang'
 
@@ -12,24 +12,23 @@ interface DataItem {
 export default function (env: EnvironmentType) {
   const getData = (id: string) => env.arweave.api.get(id).then(prop('data'))
 
-  const publish = (asset: { source: DataItem, target: DataItem }) => {
-    return dispatch(asset.source)
+  const publish = (asset: { meta: DataItem, target: DataItem }) => {
+    return dispatch(asset.meta)
       .then(({ id }) => {
-        asset.target.tags = [...asset.target.tags, { name: 'META', value: id }]
+        asset.target.tags = [
+          ...asset.target.tags,
+          { name: 'META', value: id },
+          { name: 'App-Name', value: 'SmartWeaveContract' },
+          { name: 'App-Version', value: '0.3.0' },
+          { name: 'Contract-Src', value: env.sources.asset }
+        ]
         return dispatch(asset.target)
       })
       .then(({ id }) => deployToWarp(id))
   }
 
   async function dispatch(dataItem: DataItem) {
-    return env.bundlr.upload(dataItem.data, {
-      tags: [
-        { name: 'App-Name', value: 'SmartWeaveContract' },
-        { name: 'App-Version', value: '0.3.0' },
-        { name: 'Contract-Src', value: env.sources.asset },
-        ...dataItem.tags
-      ]
-    })
+    return env.bundlr.upload(dataItem.data, { tags: dataItem.tags })
   }
 
   async function deployToWarp(id: string) {
@@ -94,12 +93,48 @@ export default function (env: EnvironmentType) {
 
   }
 
+  function stamp(asset: string) {
+    // check if vouched
+    // then post interaction via bundlr
+    // const addr = env.arweave.wallets.getAddress(env.wallet)
+    // // TODO: check if vouched first
+    // return isVouched(addr)
+    //   .then(result => env.warp.contract(env.contracts.stamp)
+    //     .connect(env.wallet)
+    //     .setEvaluationOptions({
+    //       internalWrites: true,
+    //       allowBigInt: true,
+    //       unsafeClient: 'allow'
+    //     })
+    //     .writeInteraction({
+    //       function: 'stamp',
+    //       transactionId: asset,
+    //       timestamp: Date.now()
+    //     })
+    //   )
+  }
+
+  function isVouched(addr: Promise<string>) {
+    return env.warp
+      .contract(env.contracts.vouchdao)
+      .setEvaluationOptions({
+        allowBigInt: true
+      })
+      .readState()
+      .then(compose(
+        not,
+        equals(undefined),
+        path(['cachedValue', 'state', 'vouched'])
+      ))
+  }
+
   return {
     randomUUID,
     publish,
     getData,
     gql,
-    stampCache
+    stampCache,
+    stamp
   }
 
 }

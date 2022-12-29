@@ -11,10 +11,12 @@ export const Environment = z.object({
   wallet: z.any(),
   contracts: z.object({
     stamp: z.string().default('FMRHYgSijiUNBrFy-XqyNNXenHsCV0ThR4lGAPO4chA'),
-    bar: z.string().default('VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA')
+    bar: z.string().default('VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA'),
+    vouchdao: z.string().default('_z0ch80z_daDUFqC9jHjfOL8nekJcok4ZRkE_UesYsk')
   }).default({
     stamp: 'FMRHYgSijiUNBrFy-XqyNNXenHsCV0ThR4lGAPO4chA',
-    bar: 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA'
+    bar: 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA',
+    vouchdao: '_z0ch80z_daDUFqC9jHjfOL8nekJcok4ZRkE_UesYsk'
   }),
   sources: z.object({
     asset: z.string().default('x0ojRwrcHBmZP20Y4SY0mgusMRx-IYTjg5W8c3UFoNs')
@@ -35,9 +37,10 @@ export const AtomicAsset = z.object({
   topics: z.array(z.string()),
   balances: z.record(z.string(), z.number()),
   content: z.string().optional(),
+  contentType: z.string().default('text/html'),
   html: z.string().optional(),
   forks: z.string().optional(),
-  appId: z.string().optional(),
+  groupId: z.string().optional(),
   meta: z.string().optional()
 })
 
