@@ -39,6 +39,13 @@ export default function (env: EnvironmentType) {
   function run(data: { query: string, variables: Record<string, any> }): Promise<any> {
     return env.arweave.api.post('graphql', data)
       //.then(x => (console.log('result', x.data.errors), x))
+      .then(x => {
+
+        if (x.data.errors) {
+          throw new Error(JSON.stringify(x.data.errors, null, 2))
+        }
+        return x
+      })
       .then(path(['data', 'data', 'transactions']))
   }
 

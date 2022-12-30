@@ -12,7 +12,8 @@ const warp = WarpFactory.forMainnet()
 const SDK = AssetSDK.init({ arweave, bundlr, warp, wallet: jwk })
 
 async function main() {
-  const result = await SDK.stamp("lZdkPSQm2CjMxD5Z9QDDBQ4bQlkCqPisz5qLI4ysu9I")
+  //const result = await SDK.get("S_l35BoThRZfCXC313m3S2tfKybBhxgvPrmP-BHx4tg", 'app')
+  const result = await SDK.get("rzlYd5RFIIbSQxFcJ-dnnKQUt8mhqcE36p4CrIu5je4", "app")
   console.log(result)
 
 

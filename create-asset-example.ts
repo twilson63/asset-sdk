@@ -20,7 +20,7 @@ async function main() {
     html: "<h1>Hello World</h1>",
     groupId: "TEST",
     type: "app",
-    title: "Test Application",
+    title: "Test Application v2",
     description: "Fair Forks test",
     topics: ['fair-forks', 'test'],
     balances: {

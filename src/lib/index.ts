@@ -58,10 +58,43 @@ export default function (svc: any) {
     return svc.stamp(id)
   }
 
+  function getItemsByGroupId(groupId: string, type: string) {
+    // get assetItems not data
+    const query = `query ($groupIds: [String!]!, $cursor: String, $types: [String!]!) {
+      transactions(first: 100, after: $cursor, tags: [
+        { name: "Group-Id", values: $groupIds },
+        { name: "Type", values: $types}
+       ]) {
+        pageInfo {
+          hasNextPage
+        }
+        edges {
+          cursor
+          node {
+            id 
+            tags {
+              name
+              value
+            }
+          }
+        }
+      }
+    }`
+
+    return svc.gql({
+      query,
+      variables: { groupIds: [groupId], types: [type] }
+    }).then(map(compose(
+      toAssetItem,
+      prop('node')
+    )))
+  }
+
   return {
     getAsset,
     createAsset,
-    stampAsset
+    stampAsset,
+    getItemsByGroupId
   }
 }
 
