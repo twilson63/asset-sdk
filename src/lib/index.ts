@@ -1,17 +1,5 @@
-import { compose, find, pluck, propEq, prop, join, filter, assoc, map } from 'ramda'
+import { always, compose, find, pluck, propEq, prop, join, filter, assoc, map } from 'ramda'
 import { AtomicAssetType } from '../types'
-
-// @ts-ignore
-const findSource = find(compose(
-  propEq('value', 'source'),
-  find(propEq('name', 'Type')),
-  prop('tags')))
-
-// @ts-ignore
-const findContent = type => find(compose(
-  propEq('value', type),
-  find(propEq('name', 'Type')),
-  prop('tags')))
 
 export default function (svc: any) {
   function createAsset(asset: AtomicAssetType) {
@@ -22,20 +10,20 @@ export default function (svc: any) {
     return svc.publish(createAssetData(asset))
   }
 
-  function getAsset(id: string, type: string) {
-    return buildQuery(id, type)
+  function getAsset(id: string) {
+    return buildQuery(id)
       .then(svc.gql)
       .then(
-        pluckData(type)
+        pluckData
       )
       .then(
         asset => Promise.all([
-          asset.source ? svc.getData(asset.asset.meta) : Promise.resolve('No Source Found.'),
-          asset.asset ? svc.getData(asset.asset.id) : Promise.resolve('No Content Found')
-        ]).then(([content, html]) => ({
+          svc.getData(asset.source).catch(always('No meta data...')),
+          svc.getData(asset.asset.id).catch(always('No data...'))
+        ]).then(([meta, data]) => ({
           ...toAssetItem(asset.asset),
-          content,
-          html
+          meta,
+          data
         }))
       )
       .then(asset =>
@@ -58,12 +46,11 @@ export default function (svc: any) {
     return svc.stamp(id)
   }
 
-  function getItemsByGroupId(groupId: string, type: string) {
+  function getItemsByGroupId(groupId: string) {
     // get assetItems not data
-    const query = `query ($groupIds: [String!]!, $cursor: String, $types: [String!]!) {
+    const query = `query ($groupIds: [String!]!, $cursor: String) {
       transactions(first: 100, after: $cursor, tags: [
-        { name: "Group-Id", values: $groupIds },
-        { name: "Type", values: $types}
+        { name: "Group-Id", values: $groupIds }
        ]) {
         pageInfo {
           hasNextPage
@@ -83,7 +70,7 @@ export default function (svc: any) {
 
     return svc.gql({
       query,
-      variables: { groupIds: [groupId], types: [type] }
+      variables: { groupIds: [groupId] }
     }).then(map(compose(
       toAssetItem,
       prop('node')
@@ -110,27 +97,25 @@ function toAssetItem(node: any) {
     title: getTag('Title'),
     description: getTag('Description'),
     meta: getTag('META'),
+    groupId: getTag('Group-Id'),
     published,
     stamps: 0,
     topics
   }
 }
 
-function pluckData(type: string) {
-  return (data: any) => ({
-    source: compose(findSource, pluck('node'))(data),
-    asset: compose(findContent(type), pluck('node'))(data)
+function pluckData(data: any) {
+  return ({
+    source: data[0].node.tags.find(propEq('name', 'META')).value,
+    asset: data[0].node
   })
 }
 
-function buildQuery(id: string, type: string) {
+function buildQuery(id: string) {
   return Promise.resolve({
-    query: `query ($ids: [ID!], $cursor: String, $type: String!) {
-      transactions(first: 3, after: $cursor, 
-        ids: $ids,
-        tags: [
-          { name: "Type", values: [$type] }
-        ]) {
+    query: `query ($ids: [ID!], $cursor: String) {
+      transactions(first: 1, after: $cursor, 
+        ids: $ids) {
         pageInfo {
           hasNextPage
         }
@@ -147,8 +132,7 @@ function buildQuery(id: string, type: string) {
       }
     }`,
     variables: {
-      ids: [id],
-      type
+      ids: [id]
     }
   })
 }
@@ -157,7 +141,7 @@ function createAssetData(asset: AtomicAssetType) {
   const topicTags = map(v => ({ name: `Topic:${v}`, value: v }), asset.topics)
   return {
     target: {
-      data: asset.html,
+      data: asset.data,
       tags: [
         { name: 'Content-Type', value: asset.contentType },
         { name: 'Title', value: asset.title },
@@ -179,7 +163,7 @@ function createAssetData(asset: AtomicAssetType) {
       ]
     },
     meta: {
-      data: asset.content,
+      data: asset.meta,
       tags: [
         { name: 'Content-Type', value: 'text/markdown' },
         { name: 'App-Name', value: 'AssetSDK' },

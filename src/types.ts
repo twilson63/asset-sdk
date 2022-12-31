@@ -36,9 +36,8 @@ export const AtomicAsset = z.object({
   type: z.string(),
   topics: z.array(z.string()),
   balances: z.record(z.string(), z.number()),
-  content: z.string().optional(),
   contentType: z.string().default('text/html'),
-  html: z.string().optional(),
+  data: z.string().or(z.instanceof(Uint8Array)).optional(),
   forks: z.string().optional(),
   groupId: z.string().optional(),
   meta: z.string().optional()
