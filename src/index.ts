@@ -11,7 +11,10 @@ const sdk: SDK = {
         asset = AtomicAsset.parse(asset)
         return api(svc).createAsset(asset)
       },
-      get: (id: string, type: string) => api(svc).getAsset(id, type)
+      get: (id: string) => api(svc).getAsset(id),
+      stamp: (id: string) => api(svc).stampAsset(id),
+      list: (groupId: string) => api(svc).getItemsByGroupId(groupId),
+      graph: (nodeId: string) => api(svc).getGroupGraph(nodeId)
     }
   }
 }

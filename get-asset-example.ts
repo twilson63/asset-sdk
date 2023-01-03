@@ -12,23 +12,10 @@ const warp = WarpFactory.forMainnet()
 const SDK = AssetSDK.init({ arweave, bundlr, warp, wallet: jwk })
 
 async function main() {
-  //const result = await SDK.get("63444ab5-b669-4945-8b23-84175dcbf0d2", 'app')
-  //console.log(result)
-
-  const result = await SDK.create({
-    content: "",
-    html: "",
-    appId: "TEST",
-    type: "app",
-    title: "Test Application",
-    description: "Fair Forks test",
-    topics: ['fair-forks', 'test'],
-    balances: {
-      'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI': 10000
-    }
-  })
-
+  const result = await SDK.get("vUpbBllsp96Ou11OI_C9_9WkddvYcRrwvB-b7wQ-GOQ")
   console.log(result)
+
+
 }
 
 main()
