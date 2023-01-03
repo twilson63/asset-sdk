@@ -13,7 +13,8 @@ const sdk: SDK = {
       },
       get: (id: string) => api(svc).getAsset(id),
       stamp: (id: string) => api(svc).stampAsset(id),
-      list: (groupId: string) => api(svc).getItemsByGroupId(groupId)
+      list: (groupId: string) => api(svc).getItemsByGroupId(groupId),
+      graph: (nodeId: string) => api(svc).getGroupGraph(nodeId)
     }
   }
 }

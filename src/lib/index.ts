@@ -1,4 +1,4 @@
-import { always, compose, find, pluck, propEq, prop, join, filter, assoc, map } from 'ramda'
+import { append, always, compose, find, pluck, propEq, prop, join, filter, assoc, map, head, reject, reduce, sortBy } from 'ramda'
 import { AtomicAssetType } from '../types'
 
 export default function (svc: any) {
@@ -77,12 +77,79 @@ export default function (svc: any) {
     )))
   }
 
+  function getAssetItem(nodeId: string) {
+    return buildQuery(nodeId)
+      .then(svc.gql)
+      // @ts-ignore
+      .then(compose(prop('node'), head))
+      .then(toAssetItem)
+  }
+
+  function getGroupGraph(nodeId: string) {
+    return getAssetItem(nodeId)
+      .then(prop('groupId'))
+      // @ts-ignore
+      .then(getItemsByGroupId)
+      .then(buildGraph)
+  }
+
   return {
     getAsset,
     createAsset,
     stampAsset,
-    getItemsByGroupId
+    getItemsByGroupId,
+    getGroupGraph
   }
+}
+
+function buildGraph(items: AtomicAssetType[]) {
+  function traverseGraph(children: Record<string, any>[], node: AtomicAssetType) {
+    if (children && children.length > 0) {
+      children.forEach((g: Record<string, any>) => {
+        if (g.id === node.forks) {
+          g.children = append({
+            id: node.id,
+            group: node.groupId,
+            node: node,
+            children: []
+          }, g.children)
+        } else {
+          g.children = traverseGraph(g.children, node)
+        }
+      })
+      return children
+    } else {
+      return []
+    }
+  }
+
+  function createEdge(graph: Record<string, any>, node: AtomicAssetType) {
+    if (node.forks === '') {
+      graph.id = node.id,
+        graph.group = node.groupId,
+        graph.node = node
+      graph.children = []
+    } else {
+      if (graph.id === node.forks) {
+        graph.children = append({
+          id: node.id,
+          group: node.groupId,
+          node: node,
+          children: []
+        }, graph.children)
+      } else {
+        graph.children = traverseGraph(graph.children, node)
+      }
+    }
+    return graph
+  }
+
+  // @ts-ignore
+  return compose(
+    reduce(createEdge, {}),
+    sortBy(prop('published')),
+    reject(propEq('forks', undefined))
+  )(items)
 }
 
 function toAssetItem(node: any) {
@@ -98,6 +165,7 @@ function toAssetItem(node: any) {
     description: getTag('Description'),
     meta: getTag('META'),
     groupId: getTag('Group-Id'),
+    forks: getTag('Forks'),
     published,
     stamps: 0,
     topics
@@ -150,6 +218,7 @@ function createAssetData(asset: AtomicAssetType) {
         { name: 'Published', value: String(Date.now()) },
         { name: 'Page-Code', value: asset.groupId },
         { name: 'Group-Id', value: asset.groupId },
+        { name: 'Forks', value: asset.forks },
         {
           name: 'Init-State', value: JSON.stringify({
             balances: asset.balances,
