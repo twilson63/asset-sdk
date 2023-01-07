@@ -28,6 +28,12 @@ export default function (env: EnvironmentType) {
   }
 
   async function dispatch(dataItem: DataItem) {
+    if (env.wallet === 'use_wallet') {
+      const tx = await env.arweave.createTransaction({ data: dataItem.data })
+      dataItem.tags.map(t => tx.addTag(t.name, t.value))
+      // @ts-ignore 
+      return arweaveWallet.dispatch(tx)
+    }
     return env.bundlr.upload(dataItem.data, { tags: dataItem.tags })
   }
 
